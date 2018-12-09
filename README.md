@@ -119,6 +119,6 @@ zipファイルを解凍してブラウザでindex.htmlを読み込んでくだ�
 ---
 
 
-[sample6_png]:file:///Users/naga/deve/coffee/shogi99coffee/sample6.png
+[sample6_png]:./sample6.png
 
 
