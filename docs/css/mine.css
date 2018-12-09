@@ -302,3 +302,13 @@ img {
 .ui-header .ui-navbar .ui-grid-h li.ui-block-i .ui-btn-icon-right .ui-icon,
 .ui-header .ui-navbar .ui-grid-i li.ui-block-j .ui-btn-icon-right .ui-icon,
 .ui-footer .ui-navbar .ui-grid-j li.ui-block-k .ui-btn-icon-right .ui-icon { right: 8px; }
+
+.ui-grid-c-github > .ui-block-span2 {
+  width: 25%;
+}
+.ui-grid-c-github > .ui-block-span3 {
+  width: 50%;
+}
+.ui-grid-c-github > .ui-block-span4 {
+  width: 25%;
+}
