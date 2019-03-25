@@ -303,6 +303,12 @@ img {
 .ui-header .ui-navbar .ui-grid-i li.ui-block-j .ui-btn-icon-right .ui-icon,
 .ui-footer .ui-navbar .ui-grid-j li.ui-block-k .ui-btn-icon-right .ui-icon { right: 8px; }
 
+table {
+    table-layout: auto;
+    word-break: break-all;
+    wordwrap: break-word;
+}
+
 .ui-grid-c-github > .ui-block-span2 {
   width: 25%;
 }
