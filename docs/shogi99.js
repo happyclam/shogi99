@@ -15863,7 +15863,7 @@ module.exports = CipherBase
 "use strict";
 
 
-var COLS, FIRST, MAX_VALUE, MIN_VALUE, ROWS, SECOND, Status;
+var COLS, FIRST, KIFU_KOMA_LENGTH, KIFU_ROW_LENGTH, KIFU_ROW_LENGTH_SUB, MAX_VALUE, MIN_VALUE, ROWS, SECOND, Status;
 
 Status = {
   OMOTE: 0,
@@ -15883,6 +15883,12 @@ MAX_VALUE = 50000;
 
 MIN_VALUE = -50000;
 
+KIFU_ROW_LENGTH = 27;
+
+KIFU_ROW_LENGTH_SUB = 26;
+
+KIFU_KOMA_LENGTH = 3;
+
 module.exports = {
   Status: Status,
   FIRST: FIRST,
@@ -15890,7 +15896,10 @@ module.exports = {
   COLS: COLS,
   ROWS: ROWS,
   MAX_VALUE: MAX_VALUE,
-  MIN_VALUE: MIN_VALUE
+  MIN_VALUE: MIN_VALUE,
+  KIFU_ROW_LENGTH: KIFU_ROW_LENGTH,
+  KIFU_ROW_LENGTH_SUB: KIFU_ROW_LENGTH_SUB,
+  KIFU_KOMA_LENGTH: KIFU_KOMA_LENGTH
 };
 
 /***/ }),
@@ -20833,10 +20842,11 @@ Piece = function () {
       this.posi = posi1;
       this.posi = this.posi != null ? this.posi.concat() : [];
       this.id = uniqueId.call(this);
+      this.coefficient = 0.0;
     }
 
     _createClass(Piece, [{
-      key: 'setTurn',
+      key: "setTurn",
       value: function setTurn(turn) {
         if (turn !== this.turn) {
           return this.turn = turn;
@@ -20870,7 +20880,7 @@ Ou = function () {
     _inherits(Ou, _Piece);
 
     _createClass(Ou, null, [{
-      key: 'getD',
+      key: "getD",
       value: function getD(turn, status) {
         return _direction[status][turn];
       }
@@ -20883,26 +20893,35 @@ Ou = function () {
     }
 
     _createClass(Ou, [{
-      key: 'kind',
+      key: "kind",
       value: function kind() {
         return this.constructor.name;
       }
     }, {
-      key: 'omomi',
-      value: function omomi() {
-        switch (this.status) {
-          case Const.Status.OMOTE:
-            return 9999;
-          case Const.Status.URA:
-            return 9999;
-          case Const.Status.MOTIGOMA:
-            return 9999;
-          default:
-            return 0;
-        }
+      key: "koma",
+      value: function koma() {
+        return "OU";
       }
     }, {
-      key: 'caption',
+      key: "omomi",
+      value: function omomi() {
+        var ret;
+        ret = function () {
+          switch (this.status) {
+            case Const.Status.OMOTE:
+              return 9999;
+            case Const.Status.URA:
+              return 9999;
+            case Const.Status.MOTIGOMA:
+              return 9999;
+            default:
+              return 0;
+          }
+        }.call(this);
+        return ret;
+      }
+    }, {
+      key: "caption",
       value: function caption() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -20954,6 +20973,8 @@ Ou = function () {
 
   _direction[Const.Status.MOTIGOMA][Const.SECOND] = [];
 
+  Ou.potential = [8, 8, 8];
+
   return Ou;
 }.call(undefined);
 
@@ -20964,7 +20985,7 @@ Hi = function () {
     _inherits(Hi, _Piece2);
 
     _createClass(Hi, null, [{
-      key: 'getD',
+      key: "getD",
       value: function getD(turn, status) {
         return _direction[status][turn];
       }
@@ -20977,26 +20998,39 @@ Hi = function () {
     }
 
     _createClass(Hi, [{
-      key: 'kind',
+      key: "kind",
       value: function kind() {
         return this.constructor.name;
       }
     }, {
-      key: 'omomi',
-      value: function omomi() {
-        switch (this.status) {
-          case Const.Status.OMOTE:
-            return 85;
-          case Const.Status.URA:
-            return 110;
-          case Const.Status.MOTIGOMA:
-            return 75;
-          default:
-            return 0;
+      key: "koma",
+      value: function koma() {
+        if (this.status === Const.Status.URA) {
+          return "RY";
+        } else {
+          return "HI";
         }
       }
     }, {
-      key: 'caption',
+      key: "omomi",
+      value: function omomi() {
+        var ret;
+        ret = function () {
+          switch (this.status) {
+            case Const.Status.OMOTE:
+              return 85 * (1 + this.coefficient / Hi.potential[this.status]);
+            case Const.Status.URA:
+              return 110 * (1 + this.coefficient / Hi.potential[this.status]);
+            case Const.Status.MOTIGOMA:
+              return 75;
+            default:
+              return 0;
+          }
+        }.call(this);
+        return parseInt(ret, 10);
+      }
+    }, {
+      key: "caption",
       value: function caption() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21048,6 +21082,8 @@ Hi = function () {
 
   _direction[Const.Status.MOTIGOMA][Const.SECOND] = [new Course(true, 0, 1), new Course(true, 1, 0), new Course(true, 0, -1), new Course(true, -1, 0)];
 
+  Hi.potential = [16, 16, 16];
+
   return Hi;
 }.call(undefined);
 
@@ -21058,7 +21094,7 @@ Ka = function () {
     _inherits(Ka, _Piece3);
 
     _createClass(Ka, null, [{
-      key: 'getD',
+      key: "getD",
       value: function getD(turn, status) {
         return _direction[status][turn];
       }
@@ -21071,26 +21107,39 @@ Ka = function () {
     }
 
     _createClass(Ka, [{
-      key: 'kind',
+      key: "kind",
       value: function kind() {
         return this.constructor.name;
       }
     }, {
-      key: 'omomi',
-      value: function omomi() {
-        switch (this.status) {
-          case Const.Status.OMOTE:
-            return 75;
-          case Const.Status.URA:
-            return 100;
-          case Const.Status.MOTIGOMA:
-            return 65;
-          default:
-            return 0;
+      key: "koma",
+      value: function koma() {
+        if (this.status === Const.Status.URA) {
+          return "UM";
+        } else {
+          return "KA";
         }
       }
     }, {
-      key: 'caption',
+      key: "omomi",
+      value: function omomi() {
+        var ret;
+        ret = function () {
+          switch (this.status) {
+            case Const.Status.OMOTE:
+              return 75 * (1 + this.coefficient / Ka.potential[this.status]);
+            case Const.Status.URA:
+              return 100 * (1 + this.coefficient / Ka.potential[this.status]);
+            case Const.Status.MOTIGOMA:
+              return 65;
+            default:
+              return 0;
+          }
+        }.call(this);
+        return parseInt(ret, 10);
+      }
+    }, {
+      key: "caption",
       value: function caption() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21142,6 +21191,8 @@ Ka = function () {
 
   _direction[Const.Status.MOTIGOMA][Const.SECOND] = [new Course(true, 1, 1), new Course(true, 1, -1), new Course(true, -1, -1), new Course(true, -1, 1)];
 
+  Ka.potential = [16, 16, 16];
+
   return Ka;
 }.call(undefined);
 
@@ -21152,7 +21203,7 @@ Ki = function () {
     _inherits(Ki, _Piece4);
 
     _createClass(Ki, null, [{
-      key: 'getD',
+      key: "getD",
       value: function getD(turn, status) {
         return _direction[status][turn];
       }
@@ -21165,26 +21216,35 @@ Ki = function () {
     }
 
     _createClass(Ki, [{
-      key: 'kind',
+      key: "kind",
       value: function kind() {
         return this.constructor.name;
       }
     }, {
-      key: 'omomi',
-      value: function omomi() {
-        switch (this.status) {
-          case Const.Status.OMOTE:
-            return 50;
-          case Const.Status.URA:
-            return 50;
-          case Const.Status.MOTIGOMA:
-            return 45;
-          default:
-            return 0;
-        }
+      key: "koma",
+      value: function koma() {
+        return "KI";
       }
     }, {
-      key: 'caption',
+      key: "omomi",
+      value: function omomi() {
+        var ret;
+        ret = function () {
+          switch (this.status) {
+            case Const.Status.OMOTE:
+              return 50 * (1 + this.coefficient / Ki.potential[this.status]);
+            case Const.Status.URA:
+              return 50 * (1 + this.coefficient / Ki.potential[this.status]);
+            case Const.Status.MOTIGOMA:
+              return 45;
+            default:
+              return 0;
+          }
+        }.call(this);
+        return parseInt(ret, 10);
+      }
+    }, {
+      key: "caption",
       value: function caption() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21236,6 +21296,8 @@ Ki = function () {
 
   _direction[Const.Status.MOTIGOMA][Const.SECOND] = [new Course(false, 0, 1), new Course(false, 1, 1), new Course(false, 1, 0), new Course(false, 0, -1), new Course(false, -1, 0), new Course(false, -1, 1)];
 
+  Ki.potential = [6, 6, 6];
+
   return Ki;
 }.call(undefined);
 
@@ -21246,7 +21308,7 @@ Gi = function () {
     _inherits(Gi, _Piece5);
 
     _createClass(Gi, null, [{
-      key: 'getD',
+      key: "getD",
       value: function getD(turn, status) {
         return _direction[status][turn];
       }
@@ -21259,26 +21321,39 @@ Gi = function () {
     }
 
     _createClass(Gi, [{
-      key: 'kind',
+      key: "kind",
       value: function kind() {
         return this.constructor.name;
       }
     }, {
-      key: 'omomi',
-      value: function omomi() {
-        switch (this.status) {
-          case Const.Status.OMOTE:
-            return 45;
-          case Const.Status.URA:
-            return 50;
-          case Const.Status.MOTIGOMA:
-            return 40;
-          default:
-            return 0;
+      key: "koma",
+      value: function koma() {
+        if (this.status === Const.Status.URA) {
+          return "NG";
+        } else {
+          return "GI";
         }
       }
     }, {
-      key: 'caption',
+      key: "omomi",
+      value: function omomi() {
+        var ret;
+        ret = function () {
+          switch (this.status) {
+            case Const.Status.OMOTE:
+              return 45 * (1 + this.coefficient / Gi.potential[this.status]);
+            case Const.Status.URA:
+              return 50 * (1 + this.coefficient / Gi.potential[this.status]);
+            case Const.Status.MOTIGOMA:
+              return 40;
+            default:
+              return 0;
+          }
+        }.call(this);
+        return parseInt(ret, 10);
+      }
+    }, {
+      key: "caption",
       value: function caption() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21330,6 +21405,8 @@ Gi = function () {
 
   _direction[Const.Status.MOTIGOMA][Const.SECOND] = [new Course(false, 0, 1), new Course(false, 1, 1), new Course(false, 1, -1), new Course(false, -1, -1), new Course(false, -1, 1)];
 
+  Gi.potential = [6, 6, 6];
+
   return Gi;
 }.call(undefined);
 
@@ -21340,7 +21417,7 @@ Ke = function () {
     _inherits(Ke, _Piece6);
 
     _createClass(Ke, null, [{
-      key: 'getD',
+      key: "getD",
       value: function getD(turn, status) {
         return _direction[status][turn];
       }
@@ -21353,26 +21430,39 @@ Ke = function () {
     }
 
     _createClass(Ke, [{
-      key: 'kind',
+      key: "kind",
       value: function kind() {
         return this.constructor.name;
       }
     }, {
-      key: 'omomi',
-      value: function omomi() {
-        switch (this.status) {
-          case Const.Status.OMOTE:
-            return 30;
-          case Const.Status.URA:
-            return 50;
-          case Const.Status.MOTIGOMA:
-            return 25;
-          default:
-            return 0;
+      key: "koma",
+      value: function koma() {
+        if (this.status === Const.Status.URA) {
+          return "NK";
+        } else {
+          return "KE";
         }
       }
     }, {
-      key: 'caption',
+      key: "omomi",
+      value: function omomi() {
+        var ret;
+        ret = function () {
+          switch (this.status) {
+            case Const.Status.OMOTE:
+              return 30 * (1 + this.coefficient / Ke.potential[this.status]);
+            case Const.Status.URA:
+              return 50 * (1 + this.coefficient / Ke.potential[this.status]);
+            case Const.Status.MOTIGOMA:
+              return 25;
+            default:
+              return 0;
+          }
+        }.call(this);
+        return parseInt(ret, 10);
+      }
+    }, {
+      key: "caption",
       value: function caption() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21424,6 +21514,8 @@ Ke = function () {
 
   _direction[Const.Status.MOTIGOMA][Const.SECOND] = [new Course(false, -1, 2), new Course(false, 1, 2)];
 
+  Ke.potential = [6, 6, 6];
+
   return Ke;
 }.call(undefined);
 
@@ -21434,7 +21526,7 @@ Ky = function () {
     _inherits(Ky, _Piece7);
 
     _createClass(Ky, null, [{
-      key: 'getD',
+      key: "getD",
       value: function getD(turn, status) {
         return _direction[status][turn];
       }
@@ -21447,26 +21539,39 @@ Ky = function () {
     }
 
     _createClass(Ky, [{
-      key: 'kind',
+      key: "kind",
       value: function kind() {
         return this.constructor.name;
       }
     }, {
-      key: 'omomi',
-      value: function omomi() {
-        switch (this.status) {
-          case Const.Status.OMOTE:
-            return 25;
-          case Const.Status.URA:
-            return 50;
-          case Const.Status.MOTIGOMA:
-            return 20;
-          default:
-            return 0;
+      key: "koma",
+      value: function koma() {
+        if (this.status === Const.Status.URA) {
+          return "NY";
+        } else {
+          return "KY";
         }
       }
     }, {
-      key: 'caption',
+      key: "omomi",
+      value: function omomi() {
+        var ret;
+        ret = function () {
+          switch (this.status) {
+            case Const.Status.OMOTE:
+              return 25 * (1 + this.coefficient / Ky.potential[this.status]);
+            case Const.Status.URA:
+              return 50 * (1 + this.coefficient / Ky.potential[this.status]);
+            case Const.Status.MOTIGOMA:
+              return 20;
+            default:
+              return 0;
+          }
+        }.call(this);
+        return parseInt(ret, 10);
+      }
+    }, {
+      key: "caption",
       value: function caption() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21518,6 +21623,8 @@ Ky = function () {
 
   _direction[Const.Status.MOTIGOMA][Const.SECOND] = [new Course(true, 0, 1)];
 
+  Ky.potential = [6, 6, 6];
+
   return Ky;
 }.call(undefined);
 
@@ -21528,7 +21635,7 @@ Fu = function () {
     _inherits(Fu, _Piece8);
 
     _createClass(Fu, null, [{
-      key: 'getD',
+      key: "getD",
       value: function getD(turn, status) {
         return _direction[status][turn];
       }
@@ -21541,26 +21648,39 @@ Fu = function () {
     }
 
     _createClass(Fu, [{
-      key: 'kind',
+      key: "kind",
       value: function kind() {
         return this.constructor.name;
       }
     }, {
-      key: 'omomi',
-      value: function omomi() {
-        switch (this.status) {
-          case Const.Status.OMOTE:
-            return 10;
-          case Const.Status.URA:
-            return 50;
-          case Const.Status.MOTIGOMA:
-            return 7;
-          default:
-            return 0;
+      key: "koma",
+      value: function koma() {
+        if (this.status === Const.Status.URA) {
+          return "TO";
+        } else {
+          return "FU";
         }
       }
     }, {
-      key: 'caption',
+      key: "omomi",
+      value: function omomi() {
+        var ret;
+        ret = function () {
+          switch (this.status) {
+            case Const.Status.OMOTE:
+              return 10 * (1 + this.coefficient / Fu.potential[this.status]);
+            case Const.Status.URA:
+              return 50 * (1 + this.coefficient / Fu.potential[this.status]);
+            case Const.Status.MOTIGOMA:
+              return 7;
+            default:
+              return 0;
+          }
+        }.call(this);
+        return parseInt(ret, 10);
+      }
+    }, {
+      key: "caption",
       value: function caption() {
         switch (this.status) {
           case Const.Status.OMOTE:
@@ -21611,6 +21731,8 @@ Fu = function () {
   _direction[Const.Status.MOTIGOMA][Const.FIRST] = [new Course(false, 0, -1)];
 
   _direction[Const.Status.MOTIGOMA][Const.SECOND] = [new Course(false, 0, 1)];
+
+  Fu.potential = [6, 6, 6];
 
   return Fu;
 }.call(undefined);
@@ -28946,7 +29068,7 @@ BoardGUI = function () {
           }
         } else {
           html = '<div id="btnSecond" class="ui-btn ui-no-icon ui-alt-icon ui-mini ui-nodisc-icon ui-btn-icon-right ui-btn-inline"><b>' + i18next.t('menu_second') + '</b></div>';
-          $('#group_s' + ids).append(html);
+          $('#group_s' + ids).html(html);
           for (k in s_motigoma) {
             v = s_motigoma[k];
             if (v > 0) {
@@ -29008,7 +29130,7 @@ BoardGUI = function () {
           }
         } else {
           html = '<div id="btnFirst" class="ui-btn ui-no-icon ui-alt-icon ui-mini ui-nodisc-icon ui-btn-icon-right ui-btn-inline"><b>' + i18next.t('menu_first') + '</b></div>';
-          $('#group_f' + ids).append(html);
+          $('#group_f' + ids).html(html);
           for (k in f_motigoma) {
             v = f_motigoma[k];
             if (v > 0) {
@@ -29099,9 +29221,30 @@ State = function State(turn1, status) {
 };
 
 GameGUI = function () {
-  var is_oute;
+  var _sortCoordinate, checkKind, initialBoardImage, is_oute, makePiece;
 
   var GameGUI = function () {
+    _createClass(GameGUI, null, [{
+      key: 'make_hash',
+      value: function make_hash(board) {
+        var buf, koma, l, len, rec, ref;
+        rec = [];
+        ref = board.pieces;
+        for (l = 0, len = ref.length; l < len; l++) {
+          koma = ref[l];
+          buf = {};
+          buf["kind"] = koma.kind();
+          buf["turn"] = koma.turn;
+          buf["status"] = koma.status;
+          buf["posi0"] = koma.posi[0];
+          buf["posi1"] = koma.posi[1];
+          rec.push(buf);
+        }
+        rec.sort(_sortCoordinate);
+        return crypto.createHash('md5').update(JSON.stringify(rec)).digest("hex");
+      }
+    }]);
+
     function GameGUI() {
       _classCallCheck(this, GameGUI);
 
@@ -29118,6 +29261,9 @@ GameGUI = function () {
       this.duplication = [];
       this.first_player = null;
       this.second_player = null;
+      this.check_guide = null;
+      this.radio_depth_f = null;
+      this.radio_depth_s = null;
       this.first = new Player(Const.FIRST, true);
       this.second = new Player(Const.SECOND, true);
       this.teban = this.first;
@@ -29125,6 +29271,7 @@ GameGUI = function () {
       this.md5hash = null;
       special_event = typeof cordova === "undefined" ? "DOMContentLoaded" : "deviceready";
       this.setEventListener(special_event);
+      this.originalBoardImage = "";
     }
 
     _createClass(GameGUI, [{
@@ -29140,18 +29287,26 @@ GameGUI = function () {
         }
         $('#naviSeq').text(this.seq.toString());
         this.board.display();
-        return $('#b' + this.history[this.seq]["latest"][0] + this.history[this.seq]["latest"][1]).css('border-style', 'dashed');
+        if (this.seq > 0) {
+          $('#b' + this.history[this.seq]["latest"][0].toString() + this.history[this.seq]["latest"][1].toString()).css('border-style', 'dashed');
+        }
       }
     }, {
       key: 'addState',
       value: function addState() {
         var md5hash = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
         var latest = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+        var from = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+        var to = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : null;
+        var koma = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : null;
 
         var l, len, record, ref, v;
         // console.log("GameGUI.addState")
         record = {};
-        record["latest"] = [].concat(latest);
+        record["latest"] = latest != null ? [].concat(latest) : null;
+        record["from"] = from != null ? [].concat(from) : null;
+        record["to"] = to != null ? [].concat(to) : null;
+        record["koma"] = koma != null ? koma : null;
         record["board"] = [];
         ref = this.board.pieces;
         for (l = 0, len = ref.length; l < len; l++) {
@@ -29160,7 +29315,230 @@ GameGUI = function () {
         }
         this.history.push(record);
         this.duplication.push(md5hash);
-        return $('#naviSeq').text((this.history.length - 1).toString());
+        $('#naviSeq').text((this.history.length - 1).toString());
+      }
+    }, {
+      key: 'makeRecord',
+      value: function makeRecord() {
+        var converted, linkStr, output;
+        // console.log("GameGUI.makeRecord")
+        converted = this.convert();
+        linkStr = "https://play.google.com/store/apps/details?id=shogi99.io.github.happyclam";
+        // window.plugins.socialsharing.share('\' #９九将棋 ' + linkStr + ' \n' + converted, 'shogi99', null, null);
+        output = window.open('', '９九将棋');
+        output.document.open();
+        output.document.write('<HTML><HEAD>');
+        output.document.write('<TITLE>９九将棋</TITLE>');
+        output.document.writeln('<BODY>');
+        output.document.write('\' #９九将棋 ' + linkStr + ' <br /><pre>');
+        output.document.write(converted);
+        output.document.write('</pre></BODY></HTML>');
+        output.document.close();
+      }
+    }, {
+      key: 'convert',
+      value: function convert() {
+        var from, i, l, len, radioNo, records, ref, teban, to, v;
+        if (this.history.length <= 0) {
+          // console.log("GameGUI.convert")
+          return "";
+        }
+        if (this.history[0]["latest"] != null) {
+          radioNo = this.history[0]["latest"][0];
+          records = '\'No. ' + radioNo.toString() + '\n';
+        } else {
+          radioNo = -1;
+          records = "'\n";
+        }
+        records += "'\n";
+        records += "V2.2\n";
+        if (this.first.human) {
+          records += "N+Player\n";
+        } else {
+          records += "N+AI\n";
+        }
+        if (this.second.human) {
+          records += "N-Player\n";
+        } else {
+          records += "N-AI\n";
+        }
+        if (radioNo === -1) {
+          records += this.originalBoardImage;
+        } else {
+          records += initialBoardImage.call(this, radioNo);
+        }
+        if (this.teban.turn === Const.SECOND) {
+          records += "-\n";
+        } else {
+          records += "+\n";
+        }
+        ref = this.history;
+        for (i = l = 0, len = ref.length; l < len; i = ++l) {
+          v = ref[i];
+          if (i === 0) {
+            continue;
+          }
+          teban = i % 2 === 1 ? "+" : "-";
+          from = v.from.length !== 0 ? v.from.toString().replace(",", "") : "00";
+          to = v.to.length !== 0 ? v.to.toString().replace(",", "") : "";
+          records += teban + from + to + v.koma + "\n";
+        }
+        return records;
+      }
+    }, {
+      key: 'inputRecord',
+      value: function inputRecord() {
+        var buf, col, cols, err, from, i, j, k, koma, l, len, len1, m, n, piece, ref, results, row, to, turn, v, w, y;
+        // console.log("GameGUI.inputRecord")
+        this.board.pieces = [];
+        this.history = [];
+        this.duplication = [];
+        this.seq = 0;
+        this.originalBoardImage = "";
+        try {
+          buf = $('#textKifu').val().split(/\r\n|\r|\n/);
+          results = [];
+          for (i = l = 0, len = buf.length; l < len; i = ++l) {
+            v = buf[i];
+            if (v.length === 0) {
+              continue;
+            }
+            if (v[0] === "\'") {
+              continue;
+            }
+            if (v[0] === "V") {
+              continue;
+            }
+            if (v[0] === "T") {
+              continue;
+            }
+            if (v[0] === "%") {
+              continue;
+            }
+            if (v[0] === "N") {
+              continue;
+            }
+            if (v[0] === "$") {
+              continue;
+            }
+            switch (v[0]) {
+              case "P":
+                // throw "1:Line = #{i + 1}: #{v}" unless isFinite(v[1])
+                this.originalBoardImage += v + "\n";
+                if (isFinite(v[1])) {
+                  row = parseInt(v[1], 10);
+                  cols = v.slice(2);
+                  if (!(cols.length === Const.KIFU_ROW_LENGTH || cols.length === Const.KIFU_ROW_LENGTH_SUB)) {
+                    throw '01:Line = ' + (i + 1) + ': ' + v;
+                  }
+                  for (j = m = 1, ref = this.board.cols; 1 <= ref ? m <= ref : m >= ref; j = 1 <= ref ? ++m : --m) {
+                    y = Const.KIFU_ROW_LENGTH - Const.KIFU_KOMA_LENGTH * j;
+                    col = cols.slice(y, +(y + 2) + 1 || 9e9);
+                    if (col.indexOf("*") >= 0) {
+                      continue;
+                    }
+                    piece = makePiece.call(this, col, [j, row]);
+                    if (piece != null) {
+                      this.board.pieces.push(piece);
+                    } else {
+                      throw '02:Line = ' + (i + 1) + ': ' + v;
+                    }
+                  }
+                } else if (v[1] === "+" || v[1] === "-") {
+                  cols = v.split("00");
+                  for (k = n = 0, len1 = cols.length; n < len1; k = ++n) {
+                    j = cols[k];
+                    if (k === 0) {
+                      continue;
+                    }
+                    piece = makePiece.call(this, v[1] + j);
+                    if (piece != null) {
+                      this.board.pieces.push(piece);
+                    } else {
+                      throw '03:Line = ' + (i + 1) + ': ' + v;
+                    }
+                  }
+                } else {
+                  throw '04:Line = ' + (i + 1) + ': ' + v;
+                }
+                if (this.history.length > 0) {
+                  throw '09:Line = ' + i + ': ' + v;
+                } else {
+                  results.push(void 0);
+                }
+                break;
+              case "+":
+              case "-":
+                if (v.length === 1) {
+                  this.addState();
+                  continue;
+                }
+                from = [v[1], v[2]].map(Number);
+                turn = v[0] === "+" ? Const.FIRST : Const.SECOND;
+                if (v.slice(1, 3) === "00") {
+                  koma = function () {
+                    var len2, p, ref1, results1;
+                    ref1 = this.board.pieces;
+                    results1 = [];
+                    for (p = 0, len2 = ref1.length; p < len2; p++) {
+                      w = ref1[p];
+                      if (w.posi.length === 0 && w.turn === turn && w.koma() === v.slice(5, 7)) {
+                        results1.push(w);
+                      }
+                    }
+                    return results1;
+                  }.call(this);
+                } else {
+                  koma = function () {
+                    var len2, p, ref1, results1;
+                    ref1 = this.board.pieces;
+                    results1 = [];
+                    for (p = 0, len2 = ref1.length; p < len2; p++) {
+                      w = ref1[p];
+                      if (w.posi != null && w.turn === turn && w.posi[0] === from[0] && w.posi[1] === from[1]) {
+                        results1.push(w);
+                      }
+                    }
+                    return results1;
+                  }.call(this);
+                }
+                if (koma.length === 0) {
+                  throw '05:Line = ' + (i + 1) + ': ' + v;
+                }
+                to = [v[3], v[4]].map(Number);
+                if (!checkKind.call(this, v.slice(5, 7))) {
+                  throw '08:Line = ' + (i + 1) + ': ' + v;
+                }
+                if (this.board.check_move(koma[0], to)) {
+                  from = this.board.move_capture(koma[0], to);
+                  if (koma[0].koma() !== v.slice(5, 7)) {
+                    // 駒の種類が変わっていたら成ったと見做す
+                    koma[0].status = Const.Status.URA;
+                  }
+                } else {
+                  throw '06:Line = ' + (i + 1) + ': ' + v;
+                }
+                this.md5hash = GameGUI.make_hash(this.board);
+                this.seq += 1;
+                results.push(this.addState(this.md5hash, to, from, to, koma[0].koma()));
+                break;
+              default:
+                throw '07:Line= ' + (i + 1) + ': ' + v;
+            }
+          }
+          return results;
+        } catch (error) {
+          err = error;
+          console.log('Error: ' + err);
+          return this.kifustatus.innerHTML = 'Error: ' + err;
+        } finally {
+          if (err != null) {
+            return false;
+          } else {
+            this.kifustatus.innerHTML = "";
+            return true;
+          }
+        }
       }
 
       // ゲーム開始毎
@@ -29184,10 +29562,9 @@ GameGUI = function () {
           sprintf: [i18next.t('msgBlack')]
         });
         this.teban = this.first;
-        // radio_checked = (v for v in @radio_arrange when v.checked == true)[0]
-        // launch.call @, parseInt(radio_checked.value|0, 10)
+        this.radioNo = 0;
         this.set_standard();
-        this.addState();
+        this.addState(null, this.radioNo);
         this.board.display();
         try {
           this.first_player.selectedIndex = parseInt(localStorage.getItem("first_player99") | 0, 10);
@@ -29225,14 +29602,17 @@ GameGUI = function () {
           i = ref[l];
           temp = [];
           temp = player.think(this.board, oppo, i, threshold);
+          if (this.interrupt_flg) {
+            this.auto_flg = false;
+            this.board.statusarea.innerHTML = "";
+            return;
+          }
           if (temp[0] != null) {
-            // console.log("turn = #{player.turn}: i = #{i}, kind = #{temp[0].kind()}, temp = #{JSON.stringify(temp)}")
             ret = [].concat(temp);
             if (temp[2] >= Const.MAX_VALUE || temp[2] <= Const.MIN_VALUE) {
               break;
             }
           } else {
-            // console.log("turn = #{player.turn}: i = #{i}, kind = #{temp[0]}, temp = #{JSON.stringify(temp)}")
             break;
           }
         }
@@ -29254,9 +29634,9 @@ GameGUI = function () {
             src_posi = this.board.move_capture(ret[0], ret[1]);
             ret[0].status = ret[3];
           }
-          this.md5hash = crypto.createHash('md5').update(JSON.stringify(this.board.pieces)).digest("hex");
+          this.md5hash = GameGUI.make_hash(this.board);
           this.seq += 1;
-          this.addState(this.md5hash);
+          this.addState(this.md5hash, ret[1], src_posi, ret[1], ret[0].koma());
           if (this.sennitite(this.md5hash)) {
             this.board.display();
             $('#b' + ret[1][0] + ret[1][1]).css('border-style', 'dashed');
@@ -29300,14 +29680,15 @@ GameGUI = function () {
         this.board.display();
         $('#b' + ret[1][0] + ret[1][1]).css('border-style', 'dashed');
         if (this.interrupt_flg) {
-          this.interrupt_flg = false;
           this.auto_flg = false;
           this.board.statusarea.innerHTML = "";
           return;
         } else {
-          setTimeout(function () {
-            return _this2.auto_battle(_this2.seq);
-          }, 1000);
+          if (this.auto_flg) {
+            setTimeout(function () {
+              return _this2.auto_battle(_this2.seq);
+            }, 1000);
+          }
         }
       }
 
@@ -29318,18 +29699,26 @@ GameGUI = function () {
       value: function init() {
         var _this3 = this;
 
-        var depth_f, depth_s, err, i, j, l, m;
+        var depth_f, depth_s, err, i, j, l, m, temp;
         // console.log("GameGUI.init")
         this.startbtn = document.getElementById("btnStart");
         this.first_player = document.getElementById("first_player");
         this.second_player = document.getElementById("second_player");
         this.radio_depth_f = document.getElementsByName("f-radio-depth");
         this.radio_depth_s = document.getElementsByName("s-radio-depth");
+        this.kifustatus = document.getElementById("kifuStatus");
         this.naviA = document.getElementById("naviA");
         this.naviA.style.display = "none";
         try {
           this.first_player.selectedIndex = parseInt(localStorage.getItem("first_player99") | 0, 10);
           this.second_player.selectedIndex = parseInt(localStorage.getItem("second_player99") | 0, 10);
+          temp = JSON.parse(localStorage.getItem("movement_guide99"));
+          if (temp === false) {
+            this.check_guide = false;
+          } else {
+            this.check_guide = true;
+            $("#check-guide").prop("checked", true);
+          }
           depth_f = parseInt(localStorage.getItem("f-radio-depth99") | 0, 10);
           depth_s = parseInt(localStorage.getItem("s-radio-depth99") | 0, 10);
           if (depth_f === 1) {
@@ -29377,6 +29766,25 @@ GameGUI = function () {
           this.radio_depth_f[0].checked = true;
           this.radio_depth_s[0].checked = true;
         }
+        $('#btnRecord1').on('click', function (e) {
+          _this3.makeRecord();
+        });
+        $('#btnRecord2').on('click', function (e) {
+          _this3.makeRecord();
+        });
+        $('#btnKifu').on('click', function (e) {
+          // console.log("btnKifu onClick")
+          if (_this3.inputRecord()) {
+            $('#naviSeq').text('');
+            _this3.interrupt_flg = true;
+            $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
+            _this3.startbtn.disabled = false;
+            _this3.naviA.style.display = "block";
+            _this3.board.statusarea.innerHTML = "";
+            location.href = "#home";
+            _this3.viewState();
+          }
+        });
         $('#btnStart').on('click', function (e) {
           var target;
           target = $(e.currentTarget);
@@ -29498,6 +29906,15 @@ GameGUI = function () {
             return console.log(err);
           }
         });
+        $('#check-guide').on('change', function (e) {
+          try {
+            _this3.check_guide = e.currentTarget.checked;
+            return localStorage.setItem("movement_guide99", _this3.check_guide);
+          } catch (error) {
+            err = error;
+            return console.log(err);
+          }
+        });
         $('input[name="s-radio-depth"]').on('change', function (e) {
           var target;
           target = $(e.currentTarget);
@@ -29605,6 +30022,9 @@ GameGUI = function () {
               return $(window).trigger(event);
             }, 500);
           } else {
+            if (this.sennitite(GameGUI.make_hash(this.board))) {
+              return;
+            }
             ret = [];
             oppo = this.teban.turn === Const.FIRST ? this.second : this.first;
             threshold = this.teban.turn === Const.FIRST ? Const.MAX_VALUE : Const.MIN_VALUE;
@@ -29668,9 +30088,9 @@ GameGUI = function () {
         if (nari) {
           piece.status = Const.Status.URA;
         }
-        this.md5hash = crypto.createHash('md5').update(JSON.stringify(this.board.pieces)).digest("hex");
+        this.md5hash = GameGUI.make_hash(this.board);
         this.seq += 1;
-        this.addState(this.md5hash, posi);
+        this.addState(this.md5hash, posi, src_posi, posi, piece.koma());
         if (this.sennitite(this.md5hash)) {
           this.board.display();
           $('#b' + posi[0] + posi[1]).css('border-style', 'dashed');
@@ -29751,6 +30171,10 @@ GameGUI = function () {
           return;
         }
         if (this.auto_flg) {
+          return;
+        }
+        if (piece == null) {
+          this.s_posi = null;
           return;
         }
         dest = function () {
@@ -29896,9 +30320,12 @@ GameGUI = function () {
             }
             return results;
           }.call(this)[0];
-          if (this.selected) {
+          if (this.selected != null) {
             $('#b' + posi[0] + posi[1]).css('background-color', '#E3D7A6');
             this.pre_posi = posi;
+            if (this.check_guide) {
+              this.guide(this.selected);
+            }
           } else {
             this.s_posi = null;
           }
@@ -29908,6 +30335,91 @@ GameGUI = function () {
             $('#b' + this.pre_posi[0] + this.pre_posi[1]).css('background-color', '#FFFACD');
           }
           this.touch(this.selected, this.d_posi);
+        }
+      }
+    }, {
+      key: 'guide',
+      value: function guide(piece) {
+        var buf, dest, l, len, ref, ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8, v, w;
+        ref = eval("Piece." + piece.kind()).getD(piece.turn, piece.status);
+        // console.log("GameGUI.guide")
+        for (l = 0, len = ref.length; l < len; l++) {
+          v = ref[l];
+          buf = [].concat(piece.posi);
+          buf[0] += v.xd;
+          buf[1] += v.yd;
+          if (v.series) {
+            while ((ref1 = buf[0], indexOf.call(function () {
+              var results = [];
+              for (var m = 1, ref2 = this.board.cols; 1 <= ref2 ? m <= ref2 : m >= ref2; 1 <= ref2 ? m++ : m--) {
+                results.push(m);
+              }
+              return results;
+            }.apply(this), ref1) >= 0) && (ref3 = buf[1], indexOf.call(function () {
+              var results = [];
+              for (var m = 1, ref4 = this.board.rows; 1 <= ref4 ? m <= ref4 : m >= ref4; 1 <= ref4 ? m++ : m--) {
+                results.push(m);
+              }
+              return results;
+            }.apply(this), ref3) >= 0)) {
+              dest = function () {
+                var len1, m, ref1, results;
+                ref1 = this.board.pieces;
+                results = [];
+                for (m = 0, len1 = ref1.length; m < len1; m++) {
+                  w = ref1[m];
+                  if (w.posi != null && w.posi[0] === buf[0] && w.posi[1] === buf[1]) {
+                    results.push(w);
+                  }
+                }
+                return results;
+              }.call(this);
+              if (dest.length !== 0) {
+                if (piece.turn !== dest[0].turn) {
+                  $('#b' + buf[0].toString() + buf[1].toString()).css('background-color', '#E6E6E6');
+                }
+                break;
+              } else {
+                $('#b' + buf[0].toString() + buf[1].toString()).css('background-color', '#E6E6E6');
+              }
+              buf[0] += v.xd;
+              buf[1] += v.yd;
+            }
+          } else {
+            dest = function () {
+              var len1, m, ref5, results;
+              ref5 = this.board.pieces;
+              results = [];
+              for (m = 0, len1 = ref5.length; m < len1; m++) {
+                w = ref5[m];
+                if (w.posi != null && w.posi[0] === buf[0] && w.posi[1] === buf[1]) {
+                  results.push(w);
+                }
+              }
+              return results;
+            }.call(this);
+            if (dest.length !== 0) {
+              if (piece.turn !== dest[0].turn) {
+                $('#b' + buf[0].toString() + buf[1].toString()).css('background-color', '#E6E6E6');
+              }
+            } else {
+              if ((ref5 = buf[0], indexOf.call(function () {
+                var results = [];
+                for (var m = 1, ref6 = this.board.cols; 1 <= ref6 ? m <= ref6 : m >= ref6; 1 <= ref6 ? m++ : m--) {
+                  results.push(m);
+                }
+                return results;
+              }.apply(this), ref5) >= 0) && (ref7 = buf[1], indexOf.call(function () {
+                var results = [];
+                for (var m = 1, ref8 = this.board.rows; 1 <= ref8 ? m <= ref8 : m >= ref8; 1 <= ref8 ? m++ : m--) {
+                  results.push(m);
+                }
+                return results;
+              }.apply(this), ref7) >= 0)) {
+                $('#b' + buf[0].toString() + buf[1].toString()).css('background-color', '#E6E6E6');
+              }
+            }
+          }
         }
       }
     }, {
@@ -29979,9 +30491,9 @@ GameGUI = function () {
               src_posi = _this5.board.move_capture(ret[0], ret[1]);
               ret[0].status = ret[3];
             }
-            _this5.md5hash = crypto.createHash('md5').update(JSON.stringify(_this5.board.pieces)).digest("hex");
+            _this5.md5hash = GameGUI.make_hash(_this5.board);
             _this5.seq += 1;
-            _this5.addState(_this5.md5hash, ret[1]);
+            _this5.addState(_this5.md5hash, ret[1], src_posi, ret[1], ret[0].koma());
             if (_this5.sennitite(_this5.md5hash)) {
               _this5.board.display();
               $('#b' + ret[1][0] + ret[1][1]).css('border-style', 'dashed');
@@ -30054,6 +30566,10 @@ GameGUI = function () {
                   sprintf: [i18next.t('msgWhite')]
                 });
               }
+              _this5.board.statusarea.innerHTML = _this5.board.statusarea.innerHTML + i18next.t('msgEvaluate', {
+                postProcess: 'sprintf',
+                sprintf: [ret[2].toString()]
+              });
           }
           _this5.board.display();
           return $('#b' + ret[1][0] + ret[1][1]).css('border-style', 'dashed');
@@ -30084,6 +30600,12 @@ GameGUI = function () {
 
   ;
 
+  _sortCoordinate = function _sortCoordinate(a, b) {
+    var kinds;
+    kinds = ["Fu", "Ky", "Ke", "Gi", "Ki", "Ka", "Hi", "Ou"];
+    return kinds.indexOf(a["kind"]) - kinds.indexOf(b["kind"]) || a["posi0"] - b["posi0"] || a["posi1"] - b["posi1"];
+  };
+
   is_oute = function is_oute(piece, d_posi) {
     var buf, oppo, oppo_king, v;
     oppo = piece.turn === Const.FIRST ? Const.SECOND : Const.FIRST;
@@ -30104,6 +30626,259 @@ GameGUI = function () {
     buf[1] += eval("Piece." + piece.kind()).getD(piece.turn, piece.status)[0].yd;
     // check = piece.status == Const.Status.MOTIGOMA && piece.kind() == 'Fu' && oppo_king.posi.toString() == buf.toString()
     return oppo_king.posi.toString() === buf.toString();
+  };
+
+  checkKind = function checkKind(str) {
+    return str === "OU" || str === "HI" || str === "KA" || str === "KI" || str === "GI" || str === "KE" || str === "KY" || str === "FU" || str === "RY" || str === "UM" || str === "NG" || str === "NK" || str === "NY" || str === "TO";
+  };
+
+  makePiece = function makePiece(str) {
+    var posi = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+
+    var ret;
+    ret = null;
+    switch (str.slice(1, 3)) {
+      case "OU":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Ou(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Ou(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Ou(Const.FIRST, Const.Status.OMOTE, posi);
+          } else {
+            ret = new Piece.Ou(Const.SECOND, Const.Status.OMOTE, posi);
+          }
+        }
+        break;
+      case "RY":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Hi(Const.FIRST, Const.Status.URA, posi);
+          } else {
+            ret = new Piece.Hi(Const.SECOND, Const.Status.URA, posi);
+          }
+        }
+        break;
+      case "HI":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Hi(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Hi(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Hi(Const.FIRST, Const.Status.OMOTE, posi);
+          } else {
+            ret = new Piece.Hi(Const.SECOND, Const.Status.OMOTE, posi);
+          }
+        }
+        break;
+      case "UM":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Ka(Const.FIRST, Const.Status.URA, posi);
+          } else {
+            ret = new Piece.Ka(Const.SECOND, Const.Status.URA, posi);
+          }
+        }
+        break;
+      case "KA":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Ka(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Ka(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Ka(Const.FIRST, Const.Status.OMOTE, posi);
+          } else {
+            ret = new Piece.Ka(Const.SECOND, Const.Status.OMOTE, posi);
+          }
+        }
+        break;
+      case "KI":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Ki(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Ki(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Ki(Const.FIRST, Const.Status.OMOTE, posi);
+          } else {
+            ret = new Piece.Ki(Const.SECOND, Const.Status.OMOTE, posi);
+          }
+        }
+        break;
+      case "NG":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Gi(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Gi(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Gi(Const.FIRST, Const.Status.URA, posi);
+          } else {
+            ret = new Piece.Gi(Const.SECOND, Const.Status.URA, posi);
+          }
+        }
+        break;
+      case "GI":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Gi(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Gi(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Gi(Const.FIRST, Const.Status.OMOTE, posi);
+          } else {
+            ret = new Piece.Gi(Const.SECOND, Const.Status.OMOTE, posi);
+          }
+        }
+        break;
+      case "NK":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Ke(Const.FIRST, Const.Status.URA, posi);
+          } else {
+            ret = new Piece.Ke(Const.SECOND, Const.Status.URA, posi);
+          }
+        }
+        break;
+      case "KE":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Ke(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Ke(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Ke(Const.FIRST, Const.Status.OMOTE, posi);
+          } else {
+            ret = new Piece.Ke(Const.SECOND, Const.Status.OMOTE, posi);
+          }
+        }
+        break;
+      case "NY":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Ky(Const.FIRST, Const.Status.URA, posi);
+          } else {
+            ret = new Piece.Ky(Const.SECOND, Const.Status.URA, posi);
+          }
+        }
+        break;
+      case "KY":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Ky(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Ky(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Ky(Const.FIRST, Const.Status.OMOTE, posi);
+          } else {
+            ret = new Piece.Ky(Const.SECOND, Const.Status.OMOTE, posi);
+          }
+        }
+        break;
+      case "TO":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Fu(Const.FIRST, Const.Status.URA, posi);
+          } else {
+            ret = new Piece.Fu(Const.SECOND, Const.Status.URA, posi);
+          }
+        }
+        break;
+      case "FU":
+        if (posi === null) {
+          if (str[0] === "+") {
+            ret = new Piece.Fu(Const.FIRST, Const.Status.MOTIGOMA);
+          } else {
+            ret = new Piece.Fu(Const.SECOND, Const.Status.MOTIGOMA);
+          }
+        } else {
+          if (str[0] === "+") {
+            ret = new Piece.Fu(Const.FIRST, Const.Status.OMOTE, posi);
+          } else {
+            ret = new Piece.Fu(Const.SECOND, Const.Status.OMOTE, posi);
+          }
+        }
+    }
+    return ret;
+  };
+
+  initialBoardImage = function initialBoardImage(pattern) {
+    var b;
+    // console.log("GameGUI.initialBoardImage")
+    b = "";
+    switch (pattern) {
+      case 0:
+        b += "P1-KY-KE-GI-KI-OU-KI-GI-KE-KY\n";
+        b += "P2 * -HI *  *  *  *  * -KA * \n";
+        b += "P3-FU-FU-FU-FU-FU-FU-FU-FU-FU\n";
+        b += "P4 *  *  *  *  *  *  *  *  * \n";
+        b += "P5 *  *  *  *  *  *  *  *  * \n";
+        b += "P6 *  *  *  *  *  *  *  *  * \n";
+        b += "P7+FU+FU+FU+FU+FU+FU+FU+FU+FU\n";
+        b += "P8 * +KA *  *  *  *  * +HI * \n";
+        b += "P9+KY+KE+GI+KI+OU+KI+GI+KE+KY\n";
+        break;
+      default:
+        b += "P1-KY-KE-GI-KI-OU-KI-GI-KE-KY\n";
+        b += "P2 * -HI *  *  *  *  * -KA * \n";
+        b += "P3-FU-FU-FU-FU-FU-FU-FU-FU-FU\n";
+        b += "P4 *  *  *  *  *  *  *  *  * \n";
+        b += "P5 *  *  *  *  *  *  *  *  * \n";
+        b += "P6 *  *  *  *  *  *  *  *  * \n";
+        b += "P7+FU+FU+FU+FU+FU+FU+FU+FU+FU\n";
+        b += "P8 * +KA *  *  *  *  * +HI * \n";
+        b += "P9+KY+KE+GI+KI+OU+KI+GI+KE+KY\n";
+    }
+    return b;
   };
 
   return GameGUI;
@@ -50341,7 +51116,7 @@ Const = __webpack_require__(49);
 Piece = __webpack_require__(64);
 
 Player = function () {
-  var check_kiki, check_tumi, evaluate, is_utifuOute;
+  var check_kiki, check_tumi, inc_potential, is_utifuOute;
 
   var Player = function () {
     // @depthプロパティはthink,prepareメソッドに渡す引数limitより大きな数値である必要がある
@@ -50355,7 +51130,7 @@ Player = function () {
       this.human = human;
       this.depth = depth;
       // 以下のメンバー変数は簡易版では未使用
-      this.pre_ahead = -1;
+      this.pre_ahead = 0;
       this.pre_select = 4;
       this.preparation = [];
     }
@@ -50422,14 +51197,6 @@ Player = function () {
                   move_piece = new Piece.Piece(koma.turn, koma.status, koma.posi);
                   if (board.check_move(koma, [row, col])) {
                     board.move_capture(koma, [row, col]);
-                    // 王手放置をチェック
-                    // board.make_kiki(oppo.turn)
-                    // if (check_kiki.call @, board, oppo) && limit > 0
-                    //     if @turn == Const.FIRST
-                    //         score = Const.MIN_VALUE
-                    //     else
-                    //         score = Const.MAX_VALUE
-                    // else
                     result = board.gameover();
                     if (limit > 0 && !result) {
                       ret = oppo.think(board, this, limit - 1, lastscore, utifudume_flg);
@@ -50512,14 +51279,6 @@ Player = function () {
                     }
                     board.move_capture(koma, buf);
                     while (true) {
-                      // 王手放置をチェック
-                      // board.make_kiki(oppo.turn)
-                      // if (check_kiki.call @, board, oppo) && limit > 0
-                      //     if @turn == Const.FIRST
-                      //         score = Const.MIN_VALUE
-                      //     else
-                      //         score = Const.MAX_VALUE
-                      // else
                       result = board.gameover();
                       if (utifudume != null && !result && dest.length !== 0 && dest[0].id === utifudume.id && koma.kind() !== 'Ou') {
                         // console.log(" ===== #{koma.kind()} ===================") if limit <= 0
@@ -50643,6 +51402,7 @@ Player = function () {
         ref = board.pieces;
         for (i = 0, len = ref.length; i < len; i++) {
           v = ref[i];
+          inc_potential.call(this, v, board);
           if (v.turn === Const.FIRST) {
             first += v.omomi();
           }
@@ -50683,21 +51443,109 @@ Player = function () {
     }()[0] != null;
   };
 
-  evaluate = function evaluate(board) {
-    var first, i, len, ref, second, v;
-    first = 0;
-    second = 0;
+  inc_potential = function inc_potential(piece, board) {
+    var buf, c, dest, i, j, len, len1, r, ref, ref1, ref10, ref11, ref12, ref13, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9, src, v;
+    piece.coefficient = 0.0;
+    src = [];
+    src = function () {
+      var i, ref, results;
+      results = [];
+      for (r = i = 1, ref = Const.ROWS; 1 <= ref ? i <= ref : i >= ref; r = 1 <= ref ? ++i : --i) {
+        results.push(function () {
+          var j, ref1, results1;
+          results1 = [];
+          for (c = j = 1, ref1 = Const.COLS; 1 <= ref1 ? j <= ref1 : j >= ref1; c = 1 <= ref1 ? ++j : --j) {
+            results1.push(null);
+          }
+          return results1;
+        }());
+      }
+      return results;
+    }();
     ref = board.pieces;
     for (i = 0, len = ref.length; i < len; i++) {
       v = ref[i];
-      if (v.turn === Const.FIRST) {
-        first += v.omomi();
-      }
-      if (v.turn === Const.SECOND) {
-        second += v.omomi();
+      if (v.posi.length !== 0) {
+        src[v.posi[0] - 1][v.posi[1] - 1] = v;
       }
     }
-    return first - second;
+    ref1 = eval("Piece." + piece.kind()).getD(piece.turn, piece.status);
+    for (j = 0, len1 = ref1.length; j < len1; j++) {
+      v = ref1[j];
+      // console.log("kind = #{piece.kind()}, v = #{JSON.stringify(v)}")
+      if (piece.posi.length > 0) {
+        buf = [].concat(piece.posi);
+        buf[0] += v.xd;
+        buf[1] += v.yd;
+        if (!((ref2 = buf[0], indexOf.call(function () {
+          var results = [];
+          for (var k = 1, ref3 = board.cols; 1 <= ref3 ? k <= ref3 : k >= ref3; 1 <= ref3 ? k++ : k--) {
+            results.push(k);
+          }
+          return results;
+        }.apply(this), ref2) >= 0) && (ref4 = buf[1], indexOf.call(function () {
+          var results = [];
+          for (var k = 1, ref5 = board.rows; 1 <= ref5 ? k <= ref5 : k >= ref5; 1 <= ref5 ? k++ : k--) {
+            results.push(k);
+          }
+          return results;
+        }.apply(this), ref4) >= 0))) {
+          continue;
+        }
+      } else {
+        continue;
+      }
+      if (v.series) {
+        while ((ref6 = buf[0], indexOf.call(function () {
+          var results = [];
+          for (var k = 1, ref7 = board.cols; 1 <= ref7 ? k <= ref7 : k >= ref7; 1 <= ref7 ? k++ : k--) {
+            results.push(k);
+          }
+          return results;
+        }.apply(this), ref6) >= 0) && (ref8 = buf[1], indexOf.call(function () {
+          var results = [];
+          for (var k = 1, ref9 = board.rows; 1 <= ref9 ? k <= ref9 : k >= ref9; 1 <= ref9 ? k++ : k--) {
+            results.push(k);
+          }
+          return results;
+        }.apply(this), ref8) >= 0)) {
+          dest = src[buf[0] - 1][buf[1] - 1];
+          if (dest != null) {
+            if (piece.turn !== dest.turn) {
+              piece.coefficient += 1.0;
+            }
+            break;
+          } else {
+            piece.coefficient += 1.0;
+          }
+          buf[0] += v.xd;
+          buf[1] += v.yd;
+        }
+      } else {
+        dest = src[buf[0] - 1][buf[1] - 1];
+        if (dest != null) {
+          if (piece.turn !== dest.turn) {
+            piece.coefficient += 1.0;
+          }
+        } else {
+          if ((ref10 = buf[0], indexOf.call(function () {
+            var results = [];
+            for (var k = 1, ref11 = board.cols; 1 <= ref11 ? k <= ref11 : k >= ref11; 1 <= ref11 ? k++ : k--) {
+              results.push(k);
+            }
+            return results;
+          }.apply(this), ref10) >= 0) && (ref12 = buf[1], indexOf.call(function () {
+            var results = [];
+            for (var k = 1, ref13 = board.rows; 1 <= ref13 ? k <= ref13 : k >= ref13; 1 <= ref13 ? k++ : k--) {
+              results.push(k);
+            }
+            return results;
+          }.apply(this), ref12) >= 0)) {
+            piece.coefficient += 1.0;
+          }
+        }
+      }
+    }
   };
 
   return Player;
