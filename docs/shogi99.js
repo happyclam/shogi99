@@ -29327,10 +29327,10 @@ GameGUI = function () {
         // window.plugins.socialsharing.share('\' #９九将棋 ' + linkStr + ' \n' + converted, 'shogi99', null, null);
         output = window.open('', '９九将棋');
         output.document.open();
-        output.document.write('<HTML><HEAD>');
+        output.document.write('<!DOCTYPE html><HTML><HEAD>');
         output.document.write('<TITLE>９九将棋</TITLE>');
-        output.document.writeln('<BODY>');
-        output.document.write('\' #９九将棋 ' + linkStr + ' <br /><pre>');
+        output.document.writeln('</HEAD><BODY>');
+        output.document.write('<pre>\' #９九将棋 ' + linkStr + ' <br />');
         output.document.write(converted);
         output.document.write('</pre></BODY></HTML>');
         output.document.close();
