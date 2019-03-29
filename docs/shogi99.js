@@ -30296,14 +30296,14 @@ GameGUI = function () {
           }
           return results;
         }.call(this)[0];
-        if (this.selected) {
+        if (this.selected != null) {
           this.s_posi = !null;
         }
       }
     }, {
       key: 'select',
       value: function select(posi) {
-        var v;
+        var c, l, m, r, ref, ref1, v;
         // console.log("select")
         $('#b' + posi[0] + posi[1]).css('background-color', '#FFFACD');
         if (!this.s_posi) {
@@ -30333,6 +30333,13 @@ GameGUI = function () {
           this.d_posi = posi;
           if (this.pre_posi) {
             $('#b' + this.pre_posi[0] + this.pre_posi[1]).css('background-color', '#FFFACD');
+            for (c = l = 1, ref = this.board.cols; 1 <= ref ? l <= ref : l >= ref; c = 1 <= ref ? ++l : --l) {
+              for (r = m = 1, ref1 = this.board.rows; 1 <= ref1 ? m <= ref1 : m >= ref1; r = 1 <= ref1 ? ++m : --m) {
+                if (!(r === posi[1] && c === posi[0])) {
+                  $('#b' + c.toString() + r.toString()).css('background-color', '#FFFACD');
+                }
+              }
+            }
           }
           this.touch(this.selected, this.d_posi);
         }
