@@ -29724,19 +29724,19 @@ GameGUI = function () {
           if (depth_f === 1) {
             this.radio_depth_f[1].checked = true;
             this.first.depth = 2;
-            this.first.pre_select = 13;
+            this.first.pre_select = 12;
           } else {
             this.radio_depth_f[0].checked = true;
-            this.first.depth = 2;
+            this.first.depth = 1;
             this.first.pre_select = 12;
           }
           if (depth_s === 1) {
             this.radio_depth_s[1].checked = true;
             this.second.depth = 2;
-            this.second.pre_select = 13;
+            this.second.pre_select = 12;
           } else {
             this.radio_depth_s[0].checked = true;
-            this.second.depth = 2;
+            this.second.depth = 1;
             this.second.pre_select = 12;
           }
           $("#level-first input[type='radio']").checkboxradio();
@@ -29759,9 +29759,9 @@ GameGUI = function () {
           console.log(err);
           this.first_player.selectedIndex = 0;
           this.second_player.selectedIndex = 0;
-          this.first.depth = 2;
+          this.first.depth = 1;
           this.first.pre_select = 12;
-          this.second.depth = 2;
+          this.second.depth = 1;
           this.second.pre_select = 12;
           this.radio_depth_f[0].checked = true;
           this.radio_depth_s[0].checked = true;
@@ -29895,10 +29895,10 @@ GameGUI = function () {
             if (_this3.radio_depth_f[1].checked) {
               localStorage.setItem("f-radio-depth99", 1);
               _this3.first.depth = 2;
-              return _this3.first.pre_select = 13;
+              return _this3.first.pre_select = 12;
             } else {
               localStorage.setItem("f-radio-depth99", 0);
-              _this3.first.depth = 2;
+              _this3.first.depth = 1;
               return _this3.first.pre_select = 12;
             }
           } catch (error) {
@@ -29922,10 +29922,10 @@ GameGUI = function () {
             if (_this3.radio_depth_s[1].checked) {
               localStorage.setItem("s-radio-depth99", 1);
               _this3.second.depth = 2;
-              return _this3.second.pre_select = 13;
+              return _this3.second.pre_select = 12;
             } else {
               localStorage.setItem("s-radio-depth99", 0);
-              _this3.second.depth = 2;
+              _this3.second.depth = 1;
               return _this3.second.pre_select = 12;
             }
           } catch (error) {
@@ -51409,11 +51409,7 @@ Player = function () {
         ref = board.pieces;
         for (i = 0, len = ref.length; i < len; i++) {
           v = ref[i];
-          if (this.pre_select >= 13) {
-            inc_potential.call(this, v, board);
-          } else {
-            v.coefficient = 0.0;
-          }
+          inc_potential.call(this, v, board);
           if (v.turn === Const.FIRST) {
             first += v.omomi();
           }
