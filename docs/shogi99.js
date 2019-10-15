@@ -29026,6 +29026,167 @@ BoardGUI = function () {
   var BoardGUI = function (_Board) {
     _inherits(BoardGUI, _Board);
 
+    _createClass(BoardGUI, null, [{
+      key: 'appLocalize',
+      value: function appLocalize() {
+        var lng;
+        lng = '';
+        if ((window.navigator.userLanguage || window.navigator.language || window.navigator.browserLanguage).substr(0, 2) === 'ja') {
+          lng = 'ja';
+        } else {
+          lng = 'en';
+        }
+        i18next.use(i18nextSprintfPostProcessor).init({
+          lng: lng,
+          fallbackLng: 'en',
+          debug: true,
+          resources: {
+            en: {
+              translation: {
+                title: '99 Shogi（9x9 shogi）',
+                btn_first: 'Black',
+                btn_second: 'White',
+                btn_start: 'New Game',
+                btn_stop: 'Interrupt',
+                menu_title: 'Settings',
+                menu_turn: 'Turn / AI Level',
+                menu_first: 'Black',
+                menu_second: 'White',
+                menu_person: 'Man',
+                menu_ai: 'AI',
+                menu_level: 'AI Level',
+                menu_beginner: 'Novice',
+                menu_average: 'Intermediate',
+                menu_longtime: 'Senior',
+                menu_meditation: 'Expert',
+                menu_placement: 'Initial Placement',
+                menu_movement: 'Movement of piece',
+                menu_guide: 'Display movement guide.',
+                menu_about: 'About 99 Shogi',
+                menu_kifuinput: 'Input Record',
+                menu_btninput: 'Reading',
+                menu_kifudata: 'Please paste the record of CSA format (*.csa):',
+                dlg_promote: 'Promote?',
+                dlg_promote_yes: 'Promote',
+                dlg_promote_no: 'Not promote',
+                dlg_check: 'The king is in check!',
+                dlg_utifudume: 'Utifudume!',
+                msgBlack: 'Black',
+                msgWhite: 'White',
+                msgTurn: '%s turn ',
+                msgEvaluate: '(Evaluation: %s)',
+                msgWinner: '%s Win',
+                msgRestart: 'Restart',
+                msgInterrupt: 'Interrupt',
+                msgFirstWin: 'Black Win',
+                msgSecondWin: 'White Win',
+                msgSennitite: 'Repetition Draw',
+                msgThinking: 'thinking...',
+                dlg2_exitTitle: 'Application Menu',
+                dlg2_exitItemYes: 'Exit',
+                dlg2_exitItemNo: 'Cancel',
+                dlg2_exit: 'Exit Application ?',
+                koma_front: '&emsp;Front&emsp;<br />Symbol',
+                koma_front_moves: 'Moves',
+                koma_back: 'Back(Promoted)<br />Symbol',
+                koma_back_moves: 'Moves',
+                koma_gyoku: '<img class="first" src="./img/f_ou.svg" alt=""><br />OU',
+                koma_hisya: '<img class="first" src="./img/f_hi.svg" alt=""><br />HI',
+                koma_ryu: '<img class="first" src="./img/f_ry.svg" alt=""><br />RY',
+                koma_kaku: '<img class="first" src="./img/f_ka.svg" alt=""><br />KA',
+                koma_uma: '<img class="first" src="./img/f_um.svg" alt=""><br />UM',
+                koma_kin: '<img class="first" src="./img/f_ki.svg" alt=""><br />KI',
+                koma_gin: '<img class="first" src="./img/f_gi.svg" alt=""><br />GI',
+                koma_narigin: '<img class="first" src="./img/f_ng.svg" alt=""><br />NG',
+                koma_keima: '<img class="first" src="./img/f_ke.svg" alt=""><br />KE',
+                koma_narikei: '<img class="first" src="./img/f_nk.svg" alt=""><br />NK',
+                koma_kyosya: '<img class="first" src="./img/f_ky.svg" alt=""><br />KY',
+                koma_narikyo: '<img class="first" src="./img/f_ny.svg" alt=""><br />NY',
+                koma_fu: '<img class="first" src="./img/f_fu.svg" alt=""><br />FU',
+                koma_tokin: '<img class="first" src="./img/f_to.svg" alt=""><br />TO',
+                menu_description_html: 'It is a Shogi.'
+              }
+            },
+            ja: {
+              translation: {
+                title: '９九将棋（9x9 shogi）',
+                btn_first: '先手',
+                btn_second: '後手',
+                btn_start: '新規対局',
+                btn_stop: '中断',
+                menu_title: '設定',
+                menu_turn: '先手・後手／ＡＩレベル',
+                menu_first: '先手',
+                menu_second: '後手',
+                menu_person: '人',
+                menu_ai: 'ＡＩ',
+                menu_level: 'ＡＩレベル',
+                menu_beginner: '弱い',
+                menu_average: '普通',
+                menu_longtime: '長考',
+                menu_meditation: '瞑想',
+                menu_placement: '初期配置',
+                menu_movement: '駒の動き',
+                menu_guide: '駒の移動ガイドを表示する',
+                menu_about: '「９九将棋」について',
+                menu_kifuinput: '棋譜入力',
+                menu_btninput: '棋譜読込',
+                menu_kifudata: 'CSA形式(*.csa)の棋譜を貼り付けてください:',
+                dlg_promote: '成りますか？',
+                dlg_promote_yes: '成る',
+                dlg_promote_no: '成らない',
+                dlg_check: '玉が取られてしまいます',
+                dlg_utifudume: '打ち歩詰めです',
+                msgBlack: '先手',
+                msgWhite: '後手',
+                msgTurn: '%sの番です',
+                msgEvaluate: '（評価値: %s）',
+                msgWinner: '%sの勝ちです',
+                msgRestart: '再開',
+                msgInterrupt: '中断',
+                msgFirstWin: '先手の勝ちです',
+                msgSecondWin: '後手の勝ちです',
+                msgSennitite: '千日手です',
+                msgThinking: '考え中...',
+                dlg2_exitTitle: '終了メニュー',
+                dlg2_exitItemYes: '終了',
+                dlg2_exitItemNo: 'キャンセル',
+                dlg2_exit: 'アプリを終了しますか？',
+                koma_front: '&emsp;&emsp;表&emsp;&emsp;<br />略号',
+                koma_front_moves: '動き',
+                koma_back: '　裏（成駒）　<br />略号',
+                koma_back_moves: '動き',
+                koma_gyoku: '<img class="first" src="./img/f_ou.svg" alt=""><br />OU',
+                koma_hisya: '<img class="first" src="./img/f_hi.svg" alt=""><br />HI',
+                koma_ryu: '<img class="first" src="./img/f_ry.svg" alt=""><br />RY',
+                koma_kaku: '<img class="first" src="./img/f_ka.svg" alt=""><br />KA',
+                koma_uma: '<img class="first" src="./img/f_um.svg" alt=""><br />UM',
+                koma_kin: '<img class="first" src="./img/f_ki.svg" alt=""><br />KI',
+                koma_gin: '<img class="first" src="./img/f_gi.svg" alt=""><br />GI',
+                koma_narigin: '<img class="first" src="./img/f_ng.svg" alt=""><br />NG',
+                koma_keima: '<img class="first" src="./img/f_ke.svg" alt=""><br />KE',
+                koma_narikei: '<img class="first" src="./img/f_nk.svg" alt=""><br />NK',
+                koma_kyosya: '<img class="first" src="./img/f_ky.svg" alt=""><br />KY',
+                koma_narikyo: '<img class="first" src="./img/f_ny.svg" alt=""><br />NY',
+                koma_fu: '<img class="first" src="./img/f_fu.svg" alt=""><br />FU',
+                koma_tokin: '<img class="first" src="./img/f_to.svg" alt=""><br />TO',
+                menu_description_html: 'JavaScript製将棋アプリです。'
+              }
+            }
+          }
+        });
+        return $(function () {
+          jqueryI18next.init(i18next, $);
+          $('#home').localize();
+          $('#win_menu').localize();
+          $('#popupNari').localize();
+          $('#popupCheckLeft').localize();
+          $('[id=btnStart]').val(i18next.t('btn_start')).button('refresh');
+          $('[id=btnStop]').val(i18next.t('btn_stop')).button('refresh');
+        });
+      }
+    }]);
+
     function BoardGUI() {
       _classCallCheck(this, BoardGUI);
 
@@ -29033,17 +29194,29 @@ BoardGUI = function () {
 
       _this.width = 0;
       _this.height = 0;
-      _this.statusarea = null;
+      // @statusarea = null
+      _this.latest = [];
       return _this;
     }
 
     _createClass(BoardGUI, [{
       key: 'display',
       value: function display() {
-        var id = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+        var rev = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+        var id = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
 
-        var col, f_motigoma, html, i, ids, k, koma, l, len, len1, m, n, p, ref, ref1, ref2, ref3, row, s_motigoma, v;
-        // console.log("BoardGUI.display")
+        var clsFName, clsSName, col, f_motigoma, html, i, ids, k, koma, l, len, len1, m, n, p, ref, ref1, ref2, ref3, row, s_motigoma, v;
+        if (rev) {
+          $("#surface").hide();
+          $("#reverse").show();
+          clsFName = 'firstR';
+          clsSName = 'secondR';
+        } else {
+          $("#reverse").hide();
+          $("#surface").show();
+          clsFName = 'first';
+          clsSName = 'second';
+        }
         ids = id === null ? "" : "_" + id.toString();
         s_motigoma = {
           "Hi": 0,
@@ -29064,7 +29237,7 @@ BoardGUI = function () {
         if (id === null) {
           for (k in s_motigoma) {
             v = s_motigoma[k];
-            $('#s' + k + ids).text(v.toString());
+            $('[id=s' + k + ids + ']').text(v.toString());
           }
         } else {
           html = '<div id="btnSecond" class="ui-btn ui-no-icon ui-alt-icon ui-mini ui-nodisc-icon ui-btn-icon-right ui-btn-inline"><b>' + i18next.t('menu_second') + '</b></div>';
@@ -29079,8 +29252,8 @@ BoardGUI = function () {
         }
         for (row = m = 1, ref1 = this.rows; 1 <= ref1 ? m <= ref1 : m >= ref1; row = 1 <= ref1 ? ++m : --m) {
           for (col = n = ref2 = this.cols; n >= 1; col = n += -1) {
-            $('#b' + row.toString() + col.toString()).css('background-color', '#FFFACD');
-            $('#b' + row.toString() + col.toString()).css('border-style', 'solid');
+            $('[id=b' + row.toString() + col.toString() + ']').css('background-color', '#FFFACD');
+            $('[id=b' + row.toString() + col.toString() + ']').css('border-style', 'solid');
             koma = function () {
               var len1, p, ref3, results;
               ref3 = this.pieces;
@@ -29094,18 +29267,21 @@ BoardGUI = function () {
               return results;
             }.call(this)[0];
             if (koma != null) {
-              $('#b' + koma.posi[0] + koma.posi[1] + ids).children('img').attr({
+              $('[id=b' + koma.posi[0] + koma.posi[1] + ids + ']').children('img').attr({
                 'src': getImg.call(this, koma),
                 'alt': koma.caption(),
-                'class': koma.turn === Const.FIRST ? 'first' : 'second'
+                'class': koma.turn === Const.FIRST ? clsFName : clsSName
               });
             } else {
-              $('#b' + col + row + ids).children('img').attr({
+              $('[id=b' + col + row + ids + ']').children('img').attr({
                 'src': './img/empty.svg',
                 'class': 'empty'
               });
             }
           }
+        }
+        if (this.latest.length === 2) {
+          $('[id=b' + this.latest[0] + this.latest[1] + ']').css('border-style', 'dashed');
         }
         f_motigoma = {
           "Hi": 0,
@@ -29126,7 +29302,7 @@ BoardGUI = function () {
         if (id === null) {
           for (k in f_motigoma) {
             v = f_motigoma[k];
-            $('#f' + k + ids).text(v.toString());
+            $('[id=f' + k + ids + ']').text(v.toString());
           }
         } else {
           html = '<div id="btnFirst" class="ui-btn ui-no-icon ui-alt-icon ui-mini ui-nodisc-icon ui-btn-icon-right ui-btn-inline"><b>' + i18next.t('menu_first') + '</b></div>';
@@ -29140,11 +29316,6 @@ BoardGUI = function () {
           }
         }
       }
-    }, {
-      key: 'init',
-      value: function init() {
-        return this.statusarea = document.getElementById("spanStatus");
-      }
     }]);
 
     return BoardGUI;
@@ -29152,6 +29323,8 @@ BoardGUI = function () {
 
   ;
 
+  // init: ->
+  //     @statusarea = document.getElementById("spanStatus")
   getImg = function getImg(piece) {
     var ret;
     ret = "";
@@ -29248,7 +29421,6 @@ GameGUI = function () {
     function GameGUI() {
       _classCallCheck(this, GameGUI);
 
-      var special_event;
       // console.log("GameGUI.constructor")
       this.selected = null;
       this.posi = null;
@@ -29258,10 +29430,12 @@ GameGUI = function () {
       this.interrupt_flg = false;
       this.auto_flg = false;
       this.history = [];
+      this.seq = 0;
       this.duplication = [];
       this.first_player = null;
       this.second_player = null;
       this.check_guide = null;
+      this.reverse = null;
       this.radio_depth_f = null;
       this.radio_depth_s = null;
       this.first = new Player(Const.FIRST, true);
@@ -29269,8 +29443,9 @@ GameGUI = function () {
       this.teban = this.first;
       this.board = new BoardGUI();
       this.md5hash = null;
-      special_event = typeof cordova === "undefined" ? "DOMContentLoaded" : "deviceready";
-      this.setEventListener(special_event);
+      // special_event = if typeof(cordova)=="undefined" then "DOMContentLoaded" else "deviceready"
+      // @setEventListener(special_event)
+      this.setEventListener();
       this.originalBoardImage = "";
     }
 
@@ -29285,11 +29460,9 @@ GameGUI = function () {
           v.status = this.history[this.seq]["board"][i].status;
           v.posi = this.history[this.seq]["board"][i].posi;
         }
-        $('#naviSeq').text(this.seq.toString());
-        this.board.display();
-        if (this.seq > 0) {
-          $('#b' + this.history[this.seq]["latest"][0].toString() + this.history[this.seq]["latest"][1].toString()).css('border-style', 'dashed');
-        }
+        $('[id=naviSeq]').text(this.seq.toString());
+        this.board.latest = this.history[this.seq]["latest"];
+        this.board.display(this.reverse);
       }
     }, {
       key: 'addState',
@@ -29315,7 +29488,7 @@ GameGUI = function () {
         }
         this.history.push(record);
         this.duplication.push(md5hash);
-        $('#naviSeq').text((this.history.length - 1).toString());
+        $('[id=naviSeq]').text((this.history.length - 1).toString());
       }
     }, {
       key: 'makeRecord',
@@ -29553,19 +29726,20 @@ GameGUI = function () {
         this.history = [];
         this.duplication = [];
         this.seq = 0;
-        $('#naviSeq').text('');
-        this.startbtn.disabled = true;
-        $("#btnStop").val(i18next.t('msgInterrupt')).button("refresh");
-        this.naviA.style.display = "none";
-        this.board.statusarea.innerHTML = i18next.t('msgTurn', {
+        $('[id=naviSeq]').text('');
+        $("[id=btnStart]").prop("disabled", true);
+        this.startbtn = true;
+        $("[id=btnStop]").val(i18next.t('msgInterrupt')).button("refresh");
+        $('[id=naviA]').hide();
+        $('[id=spanStatus]').html(i18next.t('msgTurn', {
           postProcess: 'sprintf',
           sprintf: [i18next.t('msgBlack')]
-        });
+        }));
         this.teban = this.first;
         this.radioNo = 0;
         this.set_standard();
         this.addState(null, this.radioNo);
-        this.board.display();
+        this.board.display(this.reverse);
         try {
           this.first_player.selectedIndex = parseInt(localStorage.getItem("first_player99") | 0, 10);
           this.second_player.selectedIndex = parseInt(localStorage.getItem("second_player99") | 0, 10);
@@ -29574,15 +29748,15 @@ GameGUI = function () {
           this.first_player.selectedIndex = 0;
           this.second_player.selectedIndex = 0;
         }
-        this.first.human = first_player.selectedIndex === 1 ? false : true;
-        return this.second.human = second_player.selectedIndex === 1 ? false : true;
+        this.first.human = this.first_player.selectedIndex === 1 ? false : true;
+        return this.second.human = this.second_player.selectedIndex === 1 ? false : true;
       }
     }, {
       key: 'auto_battle',
       value: function auto_battle(seq) {
         var _this2 = this;
 
-        var chk_sennitite, i, l, len, oppo, player, ref, ret, src_posi, temp, threshold;
+        var chk_sennitite, i, l, len, msgStr, oppo, player, ref, ret, src_posi, temp, threshold;
         this.seq = seq;
         // console.log("auto_battle")
         this.auto_flg = true;
@@ -29604,7 +29778,7 @@ GameGUI = function () {
           temp = player.think(this.board, oppo, i, threshold);
           if (this.interrupt_flg) {
             this.auto_flg = false;
-            this.board.statusarea.innerHTML = "";
+            $('[id=spanStatus]').html("");
             return;
           }
           if (temp[0] != null) {
@@ -29620,8 +29794,8 @@ GameGUI = function () {
           // 一手前のハッシュ値ですでに千日手判定されていればreturn
           chk_sennitite = this.sennitite(this.md5hash);
           if (chk_sennitite) {
-            this.board.display();
-            $('#b' + ret[1][0] + ret[1][1]).css('border-style', 'dashed');
+            this.board.latest = ret[1];
+            this.board.display(this.reverse);
             this.auto_flg = false;
             return;
           } else if (chk_sennitite === null && ret[4]["koma"] != null) {
@@ -29638,50 +29812,55 @@ GameGUI = function () {
           this.seq += 1;
           this.addState(this.md5hash, ret[1], src_posi, ret[1], ret[0].koma());
           if (this.sennitite(this.md5hash)) {
-            this.board.display();
-            $('#b' + ret[1][0] + ret[1][1]).css('border-style', 'dashed');
+            this.board.display(this.reverse);
+            $('[id=b' + ret[1][0] + ret[1][1] + ']').css('border-style', 'dashed');
             this.auto_flg = false;
             return;
           }
           this.teban = this.seq % 2 === 0 ? this.first : this.second;
           if (this.teban.turn === Const.FIRST) {
-            this.board.statusarea.innerHTML = i18next.t('msgTurn', {
+            msgStr = i18next.t('msgTurn', {
               postProcess: 'sprintf',
               sprintf: [i18next.t('msgBlack')]
             });
+            $('[id=spanStatus]').html(msgStr);
           } else {
-            this.board.statusarea.innerHTML = i18next.t('msgTurn', {
+            msgStr = i18next.t('msgTurn', {
               postProcess: 'sprintf',
               sprintf: [i18next.t('msgWhite')]
             });
+            $('[id=spanStatus]').html(msgStr);
           }
-          this.board.statusarea.innerHTML = this.board.statusarea.innerHTML + i18next.t('msgEvaluate', {
+          $('[id=spanStatus]').html(msgStr + i18next.t('msgEvaluate', {
             postProcess: 'sprintf',
             sprintf: [ret[2].toString()]
-          });
+          }));
         } else {
           if (this.teban.turn === Const.FIRST) {
-            this.board.statusarea.innerHTML = i18next.t('msgWinner', {
+            msgStr = i18next.t('msgWinner', {
               postProcess: 'sprintf',
               sprintf: [i18next.t('msgWhite')]
             });
+            $('[id=spanStatus]').html(msgStr);
           } else {
-            this.board.statusarea.innerHTML = i18next.t('msgWinner', {
+            msgStr = i18next.t('msgWinner', {
               postProcess: 'sprintf',
               sprintf: [i18next.t('msgBlack')]
             });
+            $('[id=spanStatus]').html(msgStr);
           }
-          this.startbtn.disabled = false;
-          $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
-          this.naviA.style.display = "block";
+          $("[id=btnStart]").prop("disabled", false);
+          this.startbtn = false;
+          $("[id=btnStop]").val(i18next.t('msgRestart')).button("refresh");
+          $('[id=naviA]').show();
           this.auto_flg = false;
           return;
         }
-        this.board.display();
-        $('#b' + ret[1][0] + ret[1][1]).css('border-style', 'dashed');
+        this.board.latest = ret[1];
+        this.board.display(this.reverse);
         if (this.interrupt_flg) {
           this.auto_flg = false;
-          this.board.statusarea.innerHTML = "";
+          $('[id=spanStatus]').html("");
           return;
         } else {
           if (this.auto_flg) {
@@ -29701,15 +29880,17 @@ GameGUI = function () {
 
         var depth_f, depth_s, err, i, j, l, m, temp;
         // console.log("GameGUI.init")
-        this.startbtn = document.getElementById("btnStart");
+        // @startbtn = document.getElementById("btnStart")
+        this.startbtn = null;
         this.first_player = document.getElementById("first_player");
         this.second_player = document.getElementById("second_player");
         this.radio_depth_f = document.getElementsByName("f-radio-depth");
         this.radio_depth_s = document.getElementsByName("s-radio-depth");
         this.kifustatus = document.getElementById("kifuStatus");
-        this.naviA = document.getElementById("naviA");
-        this.naviA.style.display = "none";
         try {
+          // @naviA = document.getElementById("naviA")
+          // @naviA.style.display = "none"
+          this.reverse = false;
           this.first_player.selectedIndex = parseInt(localStorage.getItem("first_player99") | 0, 10);
           this.second_player.selectedIndex = parseInt(localStorage.getItem("second_player99") | 0, 10);
           temp = JSON.parse(localStorage.getItem("movement_guide99"));
@@ -29753,6 +29934,11 @@ GameGUI = function () {
           } else {
             $("#level-second input[type='radio']").checkboxradio('enable');
           }
+          setTimeout(function () {
+            var event;
+            event = new $.Event('special');
+            return $(document).trigger(event);
+          }, 500);
         } catch (error) {
           err = error;
           console.log("=== Error ===");
@@ -29772,33 +29958,38 @@ GameGUI = function () {
         $('#btnRecord2').on('click', function (e) {
           _this3.makeRecord();
         });
+        $('#btnReverse').on('click', function (e) {
+          _this3.reverse = _this3.reverse ? false : true;
+          _this3.board.display(_this3.reverse);
+        });
         $('#btnKifu').on('click', function (e) {
           // console.log("btnKifu onClick")
           if (_this3.inputRecord()) {
-            $('#naviSeq').text('');
+            $('[id=naviSeq]').text('');
             _this3.interrupt_flg = true;
-            $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
-            _this3.startbtn.disabled = false;
-            _this3.naviA.style.display = "block";
-            _this3.board.statusarea.innerHTML = "";
+            $("[id=btnStop]").val(i18next.t('msgRestart')).button("refresh");
+            $("[id=btnStart]").prop("disabled", false);
+            _this3.startbtn = false;
+            $('[id=naviA]').show();
+            $('[id=spanStatus]').html("");
             location.href = "#home";
             _this3.viewState();
           }
         });
-        $('#btnStart').on('click', function (e) {
+        $('[id=btnStart]').on('click', function (e) {
           var target;
           target = $(e.currentTarget);
           _this3.prepare();
           _this3.first.human = _this3.first_player.selectedIndex === 1 ? false : true;
           _this3.second.human = _this3.second_player.selectedIndex === 1 ? false : true;
           if (!_this3.first.human && !_this3.second.human) {
-            _this3.board.statusarea.innerHTML = i18next.t('msgThinking');
-            _this3.board.display();
+            $('[id=spanStatus]').html(i18next.t('msgThinking'));
+            _this3.board.display(_this3.reverse);
             setTimeout(function () {
               return _this3.auto_battle(_this3.seq);
             }, 1000);
           } else if (!_this3.first.human) {
-            _this3.board.statusarea.innerHTML = i18next.t('msgThinking');
+            $('[id=spanStatus]').html(i18next.t('msgThinking'));
             setTimeout(function () {
               var event;
               event = new $.Event('ai_thinking');
@@ -29806,80 +29997,82 @@ GameGUI = function () {
             }, 500);
           }
         });
-        $('#naviStart').on('click', function (e) {
+        $('[id=naviStart]').on('click', function (e) {
           _this3.seq = 0;
           _this3.viewState();
         });
-        $('#naviPrev').on('click', function (e) {
+        $('[id=naviPrev]').on('click', function (e) {
           if (_this3.seq > 0) {
             _this3.seq -= 1;
           }
           _this3.viewState();
         });
-        $('#naviFollow').on('click', function (e) {
+        $('[id=naviFollow]').on('click', function (e) {
           if (_this3.seq < _this3.history.length - 1) {
             _this3.seq += 1;
           }
           _this3.viewState();
         });
-        $('#naviEnd').on('click', function (e) {
+        $('[id=naviEnd]').on('click', function (e) {
           _this3.seq = _this3.history.length - 1;
           _this3.viewState();
         });
         for (i = l = 1; l <= 9; i = ++l) {
           for (j = m = 1; m <= 9; j = ++m) {
-            $('#b' + i.toString() + j.toString()).on('click', function (e) {
+            $('[id=b' + i.toString() + j.toString() + ']').on('click', function (e) {
               _this3.select([Number(e.currentTarget.dataset.col), Number(e.currentTarget.dataset.row)]);
             });
           }
         }
-        $('#sFu').on('click', function (e) {
+        $('[id=sFu]').on('click', function (e) {
           _this3.motigoma(e.currentTarget.id[0] === "s" ? Const.SECOND : Const.FIRST, e.currentTarget.id.slice(1, 3));
         });
-        $('#sHi').on('click', function (e) {
+        $('[id=sHi]').on('click', function (e) {
           _this3.motigoma(e.currentTarget.id[0] === "s" ? Const.SECOND : Const.FIRST, e.currentTarget.id.slice(1, 3));
         });
-        $('#sKa').on('click', function (e) {
+        $('[id=sKa]').on('click', function (e) {
           _this3.motigoma(e.currentTarget.id[0] === "s" ? Const.SECOND : Const.FIRST, e.currentTarget.id.slice(1, 3));
         });
-        $('#sKi').on('click', function (e) {
+        $('[id=sKi]').on('click', function (e) {
           _this3.motigoma(e.currentTarget.id[0] === "s" ? Const.SECOND : Const.FIRST, e.currentTarget.id.slice(1, 3));
         });
-        $('#sGi').on('click', function (e) {
+        $('[id=sGi]').on('click', function (e) {
           _this3.motigoma(e.currentTarget.id[0] === "s" ? Const.SECOND : Const.FIRST, e.currentTarget.id.slice(1, 3));
         });
-        $('#sKe').on('click', function (e) {
+        $('[id=sKe]').on('click', function (e) {
           _this3.motigoma(e.currentTarget.id[0] === "s" ? Const.SECOND : Const.FIRST, e.currentTarget.id.slice(1, 3));
         });
-        $('#sKy').on('click', function (e) {
+        $('[id=sKy]').on('click', function (e) {
           _this3.motigoma(e.currentTarget.id[0] === "s" ? Const.SECOND : Const.FIRST, e.currentTarget.id.slice(1, 3));
         });
-        $('#fFu').on('click', function (e) {
+        $('[id=fFu]').on('click', function (e) {
           _this3.motigoma(e.currentTarget.id[0] === "s" ? Const.SECOND : Const.FIRST, e.currentTarget.id.slice(1, 3));
         });
-        $('#fHi').on('click', function (e) {
+        $('[id=fHi]').on('click', function (e) {
           _this3.motigoma(e.currentTarget.id[0] === "s" ? Const.SECOND : Const.FIRST, e.currentTarget.id.slice(1, 3));
         });
-        $('#fKa').on('click', function (e) {
+        $('[id=fKa]').on('click', function (e) {
           _this3.motigoma(e.currentTarget.id[0] === "s" ? Const.SECOND : Const.FIRST, e.currentTarget.id.slice(1, 3));
         });
-        $('#fKi').on('click', function (e) {
+        $('[id=fKi]').on('click', function (e) {
           _this3.motigoma(e.currentTarget.id[0] === "s" ? Const.SECOND : Const.FIRST, e.currentTarget.id.slice(1, 3));
         });
-        $('#fGi').on('click', function (e) {
+        $('[id=fGi]').on('click', function (e) {
           _this3.motigoma(e.currentTarget.id[0] === "s" ? Const.SECOND : Const.FIRST, e.currentTarget.id.slice(1, 3));
         });
-        $('#fKe').on('click', function (e) {
+        $('[id=fKe]').on('click', function (e) {
           _this3.motigoma(e.currentTarget.id[0] === "s" ? Const.SECOND : Const.FIRST, e.currentTarget.id.slice(1, 3));
         });
-        $('#fKy').on('click', function (e) {
+        $('[id=fKy]').on('click', function (e) {
           _this3.motigoma(e.currentTarget.id[0] === "s" ? Const.SECOND : Const.FIRST, e.currentTarget.id.slice(1, 3));
         });
-        $('#btnInterrupt').on('click', function (e) {
-          _this3.interrupted();
+        $('#btnMenu').on('click', function (e) {
+          if (_this3.startbtn) {
+            _this3.interrupted();
+          }
           return location.href = "#win_menu";
         });
-        $('#btnStop').on('click', function (e) {
+        $('[id=btnStop]').on('click', function (e) {
           return _this3.interrupted();
         });
         $('#btnNari').on('click', function (e) {
@@ -29974,27 +30167,29 @@ GameGUI = function () {
         if (this.seq == null) {
           return;
         }
-        if (this.startbtn.disabled) {
+        if (this.startbtn) {
           this.interrupt_flg = true;
-          $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
-          this.startbtn.disabled = false;
-          this.naviA.style.display = "block";
-          this.board.statusarea.innerHTML = "";
+          $("[id=btnStop]").val(i18next.t('msgRestart')).button("refresh");
+          $("[id=btnStart]").prop("disabled", false);
+          this.startbtn = false;
+          $('[id=naviA]').show();
+          $('[id=spanStatus]').html("");
         } else {
           this.interrupt_flg = false;
-          $("#btnStop").val(i18next.t('msgInterrupt')).button("refresh");
-          this.startbtn.disabled = true;
-          this.naviA.style.display = "none";
+          $("[id=btnStop]").val(i18next.t('msgInterrupt')).button("refresh");
+          $("[id=btnStart]").prop("disabled", true);
+          this.startbtn = true;
+          $('[id=naviA]').hide();
           if (this.seq % 2 === 0) {
-            this.board.statusarea.innerHTML = i18next.t('msgTurn', {
+            $('[id=spanStatus]').html(i18next.t('msgTurn', {
               postProcess: 'sprintf',
               sprintf: [i18next.t('msgBlack')]
-            });
+            }));
           } else {
-            this.board.statusarea.innerHTML = i18next.t('msgTurn', {
+            $('[id=spanStatus]').html(i18next.t('msgTurn', {
               postProcess: 'sprintf',
               sprintf: [i18next.t('msgWhite')]
-            });
+            }));
           }
           this.teban = this.seq % 2 === 0 ? this.first : this.second;
           try {
@@ -30005,17 +30200,17 @@ GameGUI = function () {
             this.first_player.selectedIndex = 0;
             this.second_player.selectedIndex = 0;
           }
-          this.first.human = first_player.selectedIndex === 1 ? false : true;
-          this.second.human = second_player.selectedIndex === 1 ? false : true;
+          this.first.human = this.first_player.selectedIndex === 1 ? false : true;
+          this.second.human = this.second_player.selectedIndex === 1 ? false : true;
           this.history.splice(this.seq + 1);
           this.duplication.splice(this.seq + 1);
           if (!this.first.human && !this.second.human) {
-            this.board.statusarea.innerHTML = i18next.t('msgThinking');
+            $('[id=spanStatus]').html(i18next.t('msgThinking'));
             setTimeout(function () {
               return _this4.auto_battle(_this4.seq);
             }, 1000);
           } else if (!this.teban.human) {
-            this.board.statusarea.innerHTML = i18next.t('msgThinking');
+            $('[id=spanStatus]').html(i18next.t('msgThinking'));
             setTimeout(function () {
               var event;
               event = new $.Event('ai_thinking');
@@ -30032,21 +30227,23 @@ GameGUI = function () {
             if (!ret[0]) {
               switch (ret[2]) {
                 case Const.MAX_VALUE:
-                  this.board.statusarea.innerHTML = i18next.t('msgFirstWin');
-                  this.startbtn.disabled = false;
-                  $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
-                  this.naviA.style.display = "block";
+                  $('[id=spanStatus]').html(i18next.t('msgFirstWin'));
+                  $("[id=btnStart]").prop("disabled", false);
+                  this.startbtn = false;
+                  $("[id=btnStop]").val(i18next.t('msgRestart')).button("refresh");
+                  $('[id=naviA]').show();
                   break;
                 case Const.MIN_VALUE:
-                  this.board.statusarea.innerHTML = i18next.t('msgSecondWin');
-                  this.startbtn.disabled = false;
-                  $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
-                  this.naviA.style.display = "block";
+                  $('[id=spanStatus]').html(i18next.t('msgSecondWin'));
+                  $("[id=btnStart]").prop("disabled", false);
+                  this.startbtn = false;
+                  $("[id=btnStop]").val(i18next.t('msgRestart')).button("refresh");
+                  $('[id=naviA]').show();
                   break;
                 default:
                   console.log("Error!");
               }
-              this.board.display();
+              this.board.display(this.reverse);
             }
           }
         }
@@ -30070,10 +30267,11 @@ GameGUI = function () {
         if (b.length === 3) {
           return null;
         } else if (b.length >= 4) {
-          this.board.statusarea.innerHTML = i18next.t('msgSennitite');
-          this.startbtn.disabled = false;
-          $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
-          this.naviA.style.display = "block";
+          $('[id=spanStatus]').html(i18next.t('msgSennitite'));
+          $("[id=btnStart]").prop("disabled", false);
+          this.startbtn = false;
+          $("[id=btnStop]").val(i18next.t('msgRestart')).button("refresh");
+          $('[id=naviA]').show();
           return true;
         } else {
           return false;
@@ -30092,46 +30290,48 @@ GameGUI = function () {
         this.seq += 1;
         this.addState(this.md5hash, posi, src_posi, posi, piece.koma());
         if (this.sennitite(this.md5hash)) {
-          this.board.display();
-          $('#b' + posi[0] + posi[1]).css('border-style', 'dashed');
+          this.board.latest = posi;
+          this.board.display(this.reverse);
           return;
         }
         this.teban = this.seq % 2 === 0 ? this.first : this.second;
         threshold = this.teban.turn === Const.FIRST ? Const.MAX_VALUE : Const.MIN_VALUE;
         switch (this.board.gameover()) {
           case Const.FIRST:
-            this.board.statusarea.innerHTML = i18next.t('msgFirstWin');
-            this.startbtn.disabled = false;
-            $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
-            this.naviA.style.display = "block";
-            this.board.display();
-            $('#b' + posi[0] + posi[1]).css('border-style', 'dashed');
+            $('[id=spanStatus]').html(i18next.t('msgFirstWin'));
+            $("[id=btnStart]").prop("disabled", false);
+            this.startbtn = false;
+            $("[id=btnStop]").val(i18next.t('msgRestart')).button("refresh");
+            $('[id=naviA]').show();
+            this.board.latest = posi;
+            this.board.display(this.reverse);
             return;
           case Const.SECOND:
-            this.board.statusarea.innerHTML = i18next.t('msgSecondWin');
-            this.startbtn.disabled = false;
-            $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
-            this.naviA.style.display = "block";
-            this.board.display();
-            $('#b' + posi[0] + posi[1]).css('border-style', 'dashed');
+            $('[id=spanStatus]').html(i18next.t('msgSecondWin'));
+            $("[id=btnStart]").prop("disabled", false);
+            this.startbtn = false;
+            $("[id=btnStop]").val(i18next.t('msgRestart')).button("refresh");
+            $('[id=naviA]').show();
+            this.board.latest = posi;
+            this.board.display(this.reverse);
             return;
           default:
             if (this.teban.turn === Const.FIRST) {
-              this.board.statusarea.innerHTML = i18next.t('msgTurn', {
+              $('[id=spanStatus]').html(i18next.t('msgTurn', {
                 postProcess: 'sprintf',
                 sprintf: [i18next.t('msgBlack')]
-              });
+              }));
             } else {
-              this.board.statusarea.innerHTML = i18next.t('msgTurn', {
+              $('[id=spanStatus]').html(i18next.t('msgTurn', {
                 postProcess: 'sprintf',
                 sprintf: [i18next.t('msgWhite')]
-              });
+              }));
             }
         }
         this.s_posi = null;
         this.d_posi = null;
-        this.board.display();
-        $('#b' + posi[0] + posi[1]).css('border-style', 'dashed');
+        this.board.latest = posi;
+        this.board.display(this.reverse);
         if (this.teban.human) {
           oppo = this.teban.turn === Const.FIRST ? this.second : this.first;
           ret = [];
@@ -30139,22 +30339,23 @@ GameGUI = function () {
           ret = this.teban.think(this.board, oppo, 1, threshold);
           if (!ret[0]) {
             if (this.teban.turn === Const.FIRST) {
-              this.board.statusarea.innerHTML = i18next.t('msgWinner', {
+              $('[id=spanStatus]').html(i18next.t('msgWinner', {
                 postProcess: 'sprintf',
                 sprintf: [i18next.t('msgWhite')]
-              });
+              }));
             } else {
-              this.board.statusarea.innerHTML = i18next.t('msgWinner', {
+              $('[id=spanStatus]').html(i18next.t('msgWinner', {
                 postProcess: 'sprintf',
                 sprintf: [i18next.t('msgBlack')]
-              });
+              }));
             }
-            this.startbtn.disabled = false;
-            $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
-            this.naviA.style.display = "block";
+            $("[id=btnStart]").prop("disabled", false);
+            this.startbtn = false;
+            $("[id=btnStop]").val(i18next.t('msgRestart')).button("refresh");
+            $('[id=naviA]').show();
           }
         } else {
-          this.board.statusarea.innerHTML = i18next.t('msgThinking');
+          $('[id=spanStatus]').html(i18next.t('msgThinking'));
           return setTimeout(function () {
             var event;
             event = new $.Event('ai_thinking');
@@ -30167,7 +30368,7 @@ GameGUI = function () {
       value: function touch(piece, posi) {
         var dest, dest_piece, king, move_piece, oppo, player, ref, ret, threshold, v;
         // console.log("touch")
-        if (!this.startbtn.disabled) {
+        if (!this.startbtn) {
           return;
         }
         if (this.auto_flg) {
@@ -30278,11 +30479,11 @@ GameGUI = function () {
       value: function motigoma(turn, kind) {
         var v;
         // console.log("motigoma")
-        if (!this.startbtn.disabled) {
+        if (!this.startbtn) {
           return;
         }
         if (this.pre_posi) {
-          $('#b' + this.pre_posi[0] + this.pre_posi[1]).css('background-color', '#FFFACD');
+          $('[id=b' + this.pre_posi[0] + this.pre_posi[1] + ']').css('background-color', '#FFFACD');
         }
         this.selected = function () {
           var l, len, ref, results;
@@ -30305,7 +30506,7 @@ GameGUI = function () {
       value: function select(posi) {
         var c, l, m, r, ref, ref1, v;
         // console.log("select")
-        $('#b' + posi[0] + posi[1]).css('background-color', '#FFFACD');
+        $('[id=b' + posi[0] + posi[1] + ']').css('background-color', '#FFFACD');
         if (!this.s_posi) {
           this.s_posi = posi;
           this.selected = function () {
@@ -30321,7 +30522,7 @@ GameGUI = function () {
             return results;
           }.call(this)[0];
           if (this.selected != null) {
-            $('#b' + posi[0] + posi[1]).css('background-color', '#E3D7A6');
+            $('[id=b' + posi[0] + posi[1] + ']').css('background-color', '#E3D7A6');
             this.pre_posi = posi;
             if (this.check_guide) {
               this.guide(this.selected);
@@ -30332,11 +30533,11 @@ GameGUI = function () {
         } else {
           this.d_posi = posi;
           if (this.pre_posi) {
-            $('#b' + this.pre_posi[0] + this.pre_posi[1]).css('background-color', '#FFFACD');
+            $('[id=b' + this.pre_posi[0] + this.pre_posi[1] + ']').css('background-color', '#FFFACD');
             for (c = l = 1, ref = this.board.cols; 1 <= ref ? l <= ref : l >= ref; c = 1 <= ref ? ++l : --l) {
               for (r = m = 1, ref1 = this.board.rows; 1 <= ref1 ? m <= ref1 : m >= ref1; r = 1 <= ref1 ? ++m : --m) {
                 if (!(r === posi[1] && c === posi[0])) {
-                  $('#b' + c.toString() + r.toString()).css('background-color', '#FFFACD');
+                  $('[id=b' + c.toString() + r.toString() + ']').css('background-color', '#FFFACD');
                 }
               }
             }
@@ -30383,11 +30584,11 @@ GameGUI = function () {
               }.call(this);
               if (dest.length !== 0) {
                 if (piece.turn !== dest[0].turn) {
-                  $('#b' + buf[0].toString() + buf[1].toString()).css('background-color', '#E6E6E6');
+                  $('[id=b' + buf[0].toString() + buf[1].toString() + ']').css('background-color', '#E6E6E6');
                 }
                 break;
               } else {
-                $('#b' + buf[0].toString() + buf[1].toString()).css('background-color', '#E6E6E6');
+                $('[id=b' + buf[0].toString() + buf[1].toString() + ']').css('background-color', '#E6E6E6');
               }
               buf[0] += v.xd;
               buf[1] += v.yd;
@@ -30407,7 +30608,7 @@ GameGUI = function () {
             }.call(this);
             if (dest.length !== 0) {
               if (piece.turn !== dest[0].turn) {
-                $('#b' + buf[0].toString() + buf[1].toString()).css('background-color', '#E6E6E6');
+                $('[id=b' + buf[0].toString() + buf[1].toString() + ']').css('background-color', '#E6E6E6');
               }
             } else {
               if ((ref5 = buf[0], indexOf.call(function () {
@@ -30423,7 +30624,7 @@ GameGUI = function () {
                 }
                 return results;
               }.apply(this), ref7) >= 0)) {
-                $('#b' + buf[0].toString() + buf[1].toString()).css('background-color', '#E6E6E6');
+                $('[id=b' + buf[0].toString() + buf[1].toString() + ']').css('background-color', '#E6E6E6');
               }
             }
           }
@@ -30447,11 +30648,17 @@ GameGUI = function () {
       }
     }, {
       key: 'setEventListener',
-      value: function setEventListener(special) {
+      value: function setEventListener() {
         var _this5 = this;
 
+        $(document).on('special', function (e) {
+          // console.log("special")
+          BoardGUI.appLocalize();
+          _this5.board.pieces = [];
+          return _this5.board.display(false);
+        });
         $(window).on('ai_thinking', function (e) {
-          var chk_sennitite, i, l, len, oppo, oppo_threshold, player, player_threshold, ref, ret, src_posi, temp, tumi;
+          var chk_sennitite, i, l, len, msgStr, oppo, oppo_threshold, player, player_threshold, ref, ret, src_posi, temp, tumi;
           // console.log("ai_thinking")
           if (_this5.teban.turn === Const.FIRST) {
             player = _this5.first;
@@ -30485,8 +30692,8 @@ GameGUI = function () {
             // 一手前のハッシュ値ですでに千日手判定されていればreturn
             chk_sennitite = _this5.sennitite(_this5.md5hash);
             if (chk_sennitite) {
-              _this5.board.display();
-              $('#b' + ret[1][0] + ret[1][1]).css('border-style', 'dashed');
+              _this5.board.latest = ret[1];
+              _this5.board.display(_this5.reverse);
               return;
             } else if (chk_sennitite === null && ret[4]["koma"] != null) {
               ret[0] = ret[4]["koma"];
@@ -30502,26 +30709,27 @@ GameGUI = function () {
             _this5.seq += 1;
             _this5.addState(_this5.md5hash, ret[1], src_posi, ret[1], ret[0].koma());
             if (_this5.sennitite(_this5.md5hash)) {
-              _this5.board.display();
-              $('#b' + ret[1][0] + ret[1][1]).css('border-style', 'dashed');
+              _this5.board.latest = ret[1];
+              _this5.board.display(_this5.reverse);
               return;
             }
             _this5.teban = _this5.seq % 2 === 0 ? _this5.first : _this5.second;
           } else {
             if (_this5.teban.turn === Const.FIRST) {
-              _this5.board.statusarea.innerHTML = i18next.t('msgWinner', {
+              $('[id=spanStatus]').html(i18next.t('msgWinner', {
                 postProcess: 'sprintf',
                 sprintf: [i18next.t('msgWhite')]
-              });
+              }));
             } else {
-              _this5.board.statusarea.innerHTML = i18next.t('msgWinner', {
+              $('[id=spanStatus]').html(i18next.t('msgWinner', {
                 postProcess: 'sprintf',
                 sprintf: [i18next.t('msgBlack')]
-              });
+              }));
             }
-            _this5.startbtn.disabled = false;
-            $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
-            _this5.naviA.style.display = "block";
+            $("[id=btnStart]").prop("disabled", false);
+            _this5.startbtn = false;
+            $("[id=btnStop]").val(i18next.t('msgRestart')).button("refresh");
+            $('[id=naviA]').show();
             return;
           }
           // 詰みチェック
@@ -30530,74 +30738,73 @@ GameGUI = function () {
           if (!tumi[0]) {
             switch (tumi[2]) {
               case Const.MAX_VALUE:
-                _this5.board.statusarea.innerHTML = i18next.t('msgFirstWin');
-                _this5.startbtn.disabled = false;
-                $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
-                _this5.naviA.style.display = "block";
+                $('[id=spanStatus]').html(i18next.t('msgFirstWin'));
+                $("[id=btnStart]").prop("disabled", false);
+                _this5.startbtn = false;
+                $("[id=btnStop]").val(i18next.t('msgRestart')).button("refresh");
+                $('[id=naviA]').show();
                 break;
               case Const.MIN_VALUE:
-                _this5.board.statusarea.innerHTML = i18next.t('msgSecondWin');
-                _this5.startbtn.disabled = false;
-                $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
-                _this5.naviA.style.display = "block";
+                $('[id=spanStatus]').html(i18next.t('msgSecondWin'));
+                $("[id=btnStart]").prop("disabled", false);
+                _this5.startbtn = false;
+                $("[id=btnStop]").val(i18next.t('msgRestart')).button("refresh");
+                $('[id=naviA]').show();
                 break;
               default:
                 console.log("Error!");
             }
-            _this5.board.display();
+            _this5.board.display(_this5.reverse);
             return;
           }
           // 相手玉が自爆しても指し手を進めてしまうのでゲーム終了チェック
           switch (_this5.board.gameover()) {
             case Const.FIRST:
-              _this5.board.statusarea.innerHTML = i18next.t('msgFirstWin');
-              _this5.startbtn.disabled = false;
-              $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
-              _this5.naviA.style.display = "block";
+              $('[id=spanStatus]').html(i18next.t('msgFirstWin'));
+              $("[id=btnStart]").prop("disabled", false);
+              _this5.startbtn = false;
+              $("[id=btnStop]").val(i18next.t('msgRestart')).button("refresh");
+              $('[id=naviA]').show();
               break;
             case Const.SECOND:
-              _this5.board.statusarea.innerHTML = i18next.t('msgSecondWin');
-              _this5.startbtn.disabled = false;
-              $("#btnStop").val(i18next.t('msgRestart')).button("refresh");
-              _this5.naviA.style.display = "block";
+              $('[id=spanStatus]').html(i18next.t('msgSecondWin'));
+              $("[id=btnStart]").prop("disabled", false);
+              _this5.startbtn = false;
+              $("[id=btnStop]").val(i18next.t('msgRestart')).button("refresh");
+              $('[id=naviA]').show();
               break;
             default:
               if (_this5.teban.turn === Const.FIRST) {
-                _this5.board.statusarea.innerHTML = i18next.t('msgTurn', {
+                msgStr = i18next.t('msgTurn', {
                   postProcess: 'sprintf',
                   sprintf: [i18next.t('msgBlack')]
                 });
+                $('[id=spanStatus]').html(msgStr);
               } else {
-                _this5.board.statusarea.innerHTML = i18next.t('msgTurn', {
+                msgStr = i18next.t('msgTurn', {
                   postProcess: 'sprintf',
                   sprintf: [i18next.t('msgWhite')]
                 });
+                $('[id=spanStatus]').html(msgStr);
               }
-              _this5.board.statusarea.innerHTML = _this5.board.statusarea.innerHTML + i18next.t('msgEvaluate', {
+              $('[id=spanStatus]').html(msgStr + i18next.t('msgEvaluate', {
                 postProcess: 'sprintf',
                 sprintf: [ret[2].toString()]
-              });
+              }));
           }
-          _this5.board.display();
-          return $('#b' + ret[1][0] + ret[1][1]).css('border-style', 'dashed');
+          _this5.board.latest = ret[1];
+          return _this5.board.display(_this5.reverse);
         });
-        $(document).on('ready', function (e) {
-          // console.log("=== Document Ready ===")
-          $('#btnStart').val(i18next.t('btn_start')).button('refresh');
-          return $('#btnStop').val(i18next.t('btn_stop')).button('refresh');
-        });
-        $(window).on('load', function (e) {
+        // $(document).on 'ready', (e) =>
+        //     # console.log("=== Document Ready ===")
+        //     $('[id=btnStart]').val(i18next.t('btn_start')).button('refresh');
+        //     $('[id=btnStop]').val(i18next.t('btn_stop')).button('refresh');
+        return $(window).on('load', function (e) {
           var target;
           // console.log("=== Load ===")
           target = $(e.currentTarget);
           _this5.setBoardSize(target.width(), target.height());
-          _this5.init();
-          return _this5.board.init();
-        });
-        return $(window).on(special, function (e) {
-          var target;
-          // console.log("=== Device Ready ===")
-          return target = $(e.currentTarget);
+          return _this5.init();
         });
       }
     }]);
@@ -30610,9 +30817,18 @@ GameGUI = function () {
   _sortCoordinate = function _sortCoordinate(a, b) {
     var kinds;
     kinds = ["Fu", "Ky", "Ke", "Gi", "Ki", "Ka", "Hi", "Ou"];
-    return kinds.indexOf(a["kind"]) - kinds.indexOf(b["kind"]) || a["posi0"] - b["posi0"] || a["posi1"] - b["posi1"];
+    return kinds.indexOf(a["kind"]) - kinds.indexOf(b["kind"]) || a["turn"] - b["turn"] || a["status"] - b["status"] || a["posi0"] - b["posi0"] || a["posi1"] - b["posi1"];
   };
 
+  // unless navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)
+  //     setTimeout (=>
+  //         event = new ($.Event)('special')
+  //         $(document).trigger event
+  //         ),500
+
+  // $(window).on special, (e) =>
+  //     # console.log("=== Device Ready ===")
+  //     target = $(e.currentTarget)
   is_oute = function is_oute(piece, d_posi) {
     var buf, oppo, oppo_king, v;
     oppo = piece.turn === Const.FIRST ? Const.SECOND : Const.FIRST;

@@ -28,7 +28,13 @@
     <link rel="stylesheet" type="text/css" href="css/index.css" />
     <link rel="stylesheet" type="text/css" href="./css/jquery.mobile-1.4.5.min.css" />
     <link rel="stylesheet" type="text/css" href="css/mine.css" />
-    <script type="text/javascript" src="js/jquery-1.11.2.min.js"> </script>
+    <script type="text/javascript" src="js/jquery-1.12.4.min.js"> </script>
+    <script>$.mobileBackCompat = false;</script>
+    <script>
+    jQuery.ajaxPrefilter( function( s ) {
+        if ( s.crossDomain ) { s.contents.script = false; }
+    } );
+    </script>
     <script>
       $(document).on('mobileinit', function() {
       $.mobile.loader.prototype.options.text = 'Loading...';
@@ -41,181 +47,9 @@
     </script>
     <script type="text/javascript" src="js/jquery.mobile-1.4.5.min.js"> </script>
     <script type="text/javascript" src="shogi99.js"> </script>
-    <script>
-    function moveCheck(){
-        if (document.getElementById("btnStart").disabled){
-            $("#popupInterrupt").popup("open");
-        } else {
-            location.href = "#win_menu";
-        }
-    };
-    </script>
     <script type="text/javascript" src="bower_components/i18next/i18next.min.js"></script>
     <script type="text/javascript" src="bower_components/i18next-sprintf-postprocessor/i18nextSprintfPostProcessor.min.js"></script>
     <script type="text/javascript" src="bower_components/jquery-i18next/jquery-i18next.min.js"></script>
-    <script>
-        var lng = '';
-        if (((window.navigator.userLanguage || window.navigator.language || window.navigator.browserLanguage).substr(0,2)) == "ja") {
-            lng = 'ja';
-        } else {
-            lng = 'en';
-        }
-        i18next
-        .use(i18nextSprintfPostProcessor)
-        .init({
-            lng: lng,
-            fallbackLng: 'en',
-            debug: true,
-            resources: {
-                en: {
-                    translation: {
-                        title: '99 Shogi（9x9 shogi）',
-                        btn_first: 'Black',
-                        btn_second: 'White',
-                        btn_start: 'New Game',
-                        btn_stop: 'Interrupt',
-                        menu_title: 'Settings',
-                        menu_turn: 'Turn / AI Level',
-                        menu_first: 'Black',
-                        menu_second: 'White',
-                        menu_person: 'Man',
-                        menu_ai: 'AI',
-                        menu_level: 'AI Level',
-                        menu_beginner: 'Novice',
-                        menu_average: 'Intermediate',
-                        menu_longtime: 'Senior',
-                        menu_meditation: 'Expert',
-                        menu_placement: 'Initial Placement',
-                        menu_movement: 'Movement of piece',
-                        menu_guide: 'Display movement guide.',
-                        menu_about: 'About 99 Shogi',
-                        menu_kifuinput: 'Input Record',
-                        menu_btninput: 'Reading',
-                        menu_kifudata: 'Please paste the record of CSA format (*.csa):',
-                        dlg_promote: 'Promote?',
-                        dlg_promote_yes: 'Promote',
-                        dlg_promote_no: 'Not promote',
-                        dlg_interrupt: 'Interrupt?',
-                        dlg_interrupt_yes: 'Interrupt',
-                        dlg_interrupt_no: 'Back',
-                        dlg_check: 'The king is in check!',
-                        dlg_utifudume: 'Utifudume!',
-                        msgBlack: 'Black',
-                        msgWhite: 'White',
-                        msgTurn: '%s turn ',
-                        msgEvaluate: '(Evaluation: %s)',
-                        msgWinner: '%s Win',
-                        msgRestart: 'Restart',
-                        msgInterrupt: 'Interrupt',
-                        msgFirstWin: 'Black Win',
-                        msgSecondWin: 'White Win',
-                        msgSennitite: 'Repetition Draw',
-                        msgThinking: 'thinking...',
-                        dlg2_exitTitle: 'Application Menu',
-                        dlg2_exitItemYes: 'Exit',
-                        dlg2_exitItemNo: 'Cancel',
-                        dlg2_exit: 'Exit Application ?',
-                        koma_front: '&emsp;Front&emsp;<br />Symbol',
-                        koma_front_moves: 'Moves',
-                        koma_back: 'Back(Promoted)<br />Symbol',
-                        koma_back_moves: 'Moves',
-                        koma_gyoku: '<img class="first" src="./img/f_ou.svg" alt=""><br />OU',
-                        koma_hisya: '<img class="first" src="./img/f_hi.svg" alt=""><br />HI',
-                        koma_ryu: '<img class="first" src="./img/f_ry.svg" alt=""><br />RY',
-                        koma_kaku: '<img class="first" src="./img/f_ka.svg" alt=""><br />KA',
-                        koma_uma: '<img class="first" src="./img/f_um.svg" alt=""><br />UM',
-                        koma_kin: '<img class="first" src="./img/f_ki.svg" alt=""><br />KI',
-                        koma_gin: '<img class="first" src="./img/f_gi.svg" alt=""><br />GI',
-                        koma_narigin: '<img class="first" src="./img/f_ng.svg" alt=""><br />NG',
-                        koma_keima: '<img class="first" src="./img/f_ke.svg" alt=""><br />KE',
-                        koma_narikei: '<img class="first" src="./img/f_nk.svg" alt=""><br />NK',
-                        koma_kyosya: '<img class="first" src="./img/f_ky.svg" alt=""><br />KY',
-                        koma_narikyo: '<img class="first" src="./img/f_ny.svg" alt=""><br />NY',
-                        koma_fu: '<img class="first" src="./img/f_fu.svg" alt=""><br />FU',
-                        koma_tokin: '<img class="first" src="./img/f_to.svg" alt=""><br />TO',
-                        menu_description_html: 'It is a Shogi.'
-                    }
-                },
-                ja: {
-                    translation: {
-                        title: '９九将棋（9x9 shogi）',
-                        btn_first: '先手',
-                        btn_second: '後手',
-                        btn_start: '新規対局',
-                        btn_stop: '中断',
-                        menu_title: '設定',
-                        menu_turn: '先手・後手／ＡＩレベル',
-                        menu_first: '先手',
-                        menu_second: '後手',
-                        menu_person: '人',
-                        menu_ai: 'ＡＩ',
-                        menu_level: 'ＡＩレベル',
-                        menu_beginner: '弱い',
-                        menu_average: '普通',
-                        menu_longtime: '長考',
-                        menu_meditation: '瞑想',
-                        menu_placement: '初期配置',
-                        menu_movement: '駒の動き',
-                        menu_guide: '駒の移動ガイドを表示する',
-                        menu_about: '「９九将棋」について',
-                        menu_kifuinput: '棋譜入力',
-                        menu_btninput: '棋譜読込',
-                        menu_kifudata: 'CSA形式(*.csa)の棋譜を貼り付けてください:',
-                        dlg_promote: '成りますか？',
-                        dlg_promote_yes: '成る',
-                        dlg_promote_no: '成らない',
-                        dlg_interrupt: '中断しますか？',
-                        dlg_interrupt_yes: '中断',
-                        dlg_interrupt_no: '戻る',
-                        dlg_check: '玉が取られてしまいます',
-                        dlg_utifudume: '打ち歩詰めです',
-                        msgBlack: '先手',
-                        msgWhite: '後手',
-                        msgTurn: '%sの番です',
-                        msgEvaluate: '（評価値: %s）',
-                        msgWinner: '%sの勝ちです',
-                        msgRestart: '再開',
-                        msgInterrupt: '中断',
-                        msgFirstWin: '先手の勝ちです',
-                        msgSecondWin: '後手の勝ちです',
-                        msgSennitite: '千日手です',
-                        msgThinking: '考え中...',
-                        dlg2_exitTitle: '終了メニュー',
-                        dlg2_exitItemYes: '終了',
-                        dlg2_exitItemNo: 'キャンセル',
-                        dlg2_exit: 'アプリを終了しますか？',
-                        koma_front: '&emsp;&emsp;表&emsp;&emsp;<br />略号',
-                        koma_front_moves: '動き',
-                        koma_back: '　裏（成駒）　<br />略号',
-                        koma_back_moves: '動き',
-                        koma_gyoku: '<img class="first" src="./img/f_ou.svg" alt=""><br />OU',
-                        koma_hisya: '<img class="first" src="./img/f_hi.svg" alt=""><br />HI',
-                        koma_ryu: '<img class="first" src="./img/f_ry.svg" alt=""><br />RY',
-                        koma_kaku: '<img class="first" src="./img/f_ka.svg" alt=""><br />KA',
-                        koma_uma: '<img class="first" src="./img/f_um.svg" alt=""><br />UM',
-                        koma_kin: '<img class="first" src="./img/f_ki.svg" alt=""><br />KI',
-                        koma_gin: '<img class="first" src="./img/f_gi.svg" alt=""><br />GI',
-                        koma_narigin: '<img class="first" src="./img/f_ng.svg" alt=""><br />NG',
-                        koma_keima: '<img class="first" src="./img/f_ke.svg" alt=""><br />KE',
-                        koma_narikei: '<img class="first" src="./img/f_nk.svg" alt=""><br />NK',
-                        koma_kyosya: '<img class="first" src="./img/f_ky.svg" alt=""><br />KY',
-                        koma_narikyo: '<img class="first" src="./img/f_ny.svg" alt=""><br />NY',
-                        koma_fu: '<img class="first" src="./img/f_fu.svg" alt=""><br />FU',
-                        koma_tokin: '<img class="first" src="./img/f_to.svg" alt=""><br />TO',
-        　　　　　　　　menu_description_html: 'JavaScript製将棋アプリです。'
-                    }
-                }
-            }
-        });
-        $(function () {
-            jqueryI18next.init(i18next, $);
-            $('#home').localize();
-            $('#win_menu').localize();
-            $('#popupNari').localize();
-            $('#popupInterrupt').localize();
-            $('#popupCheckLeft').localize();
-        });
-    </script>
     <title>９九将棋（9x9 shogi）</title>
 </head>
 <body>
@@ -223,9 +57,13 @@
   <div data-role="header" data-position="fixed" data-tap-toggle="false">
     <h1 id="title" data-i18n="title">９九将棋（9x9 shogi）</h1>
     <button id="btnRecord1" class="ui-btn ui-icon-check ui-btn-icon-notext ui-btn-left" data-role="button">Game Record</button>
-    <button class="ui-btn ui-btn-inline ui-icon-gear ui-btn-right ui-btn-icon-notext" data-role="button" onclick="javascript:moveCheck();">Setting</button>
+    <div class="ui-btn-right">
+      <button id="btnReverse" class="ui-btn ui-icon-refresh ui-btn-icon-notext" data-role="button">Reverse</button>    
+      <button id="btnMenu" class="ui-btn ui-icon-gear ui-btn-icon-notext" data-role="button">Setting</button>
+    </div>
   </div>
-  <div data-role="content">
+  <!-- -> surface ==================================== -->
+  <div id="surface" data-role="content">
     <div class="ui-grid-c-github">
     <div class="ui-block-a ui-block-span1">
       <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -610,6 +448,394 @@
     </div> <!-- block d -->
     </div> <!-- grid c -->
   </div>
+  <!-- <- surface ==================================== -->
+  <!-- -> reveese ==================================== -->  
+  <div id="reverse" data-role="content">
+    <div class="ui-grid-c-github">
+    <div class="ui-block-a ui-block-span1">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- pc_shogi99 -->
+      <ins class="adsbygoogle"
+           style="display:inline-block;width:300px;height:600px"
+           data-ad-client="ca-pub-9018029357773039"
+           data-ad-slot="3884959877"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>  <!-- block a -->
+    <div class="ui-block-d ui-block-span3">
+    <div class="ui-grid-solo-second">
+      <div class="ui-block-a">
+	    <div data-role="controlgroup" data-type="horizontal">
+          <div id="btnFirst" class="ui-btn ui-no-icon ui-alt-icon ui-mini ui-nodisc-icon ui-btn-icon-right ui-btn-inline"><b data-i18n="btn_first">後手</b></div>
+          <div id="fHi" class="ui-btn ui-icon-shi ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
+          <div id="fKa" class="ui-btn ui-icon-ska ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
+          <div id="fKi" class="ui-btn ui-icon-ski ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
+          <div id="fGi" class="ui-btn ui-icon-sgi ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
+          <div id="fKe" class="ui-btn ui-icon-ske ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
+          <div id="fKy" class="ui-btn ui-icon-sky ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
+          <div id="fFu" class="ui-btn ui-icon-sfu ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
+          <div id="dummy" class="ui-btn ui-mini ui-state-disabled"></div>
+          <div id="naviSeq" class="ui-btn ui-mini ui-corner-all"></div>
+        </div>
+      </div>
+    </div>
+    <div id="mainboard" class="ui-grid-j-board">
+      <div class="ui-block-a">九
+      </div>
+      <div class="ui-block-b">
+        <div id="b19" data-col="1" data-row="9" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-c">
+        <div id="b29" data-col="2" data-row="9" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-d">
+        <div id="b39" data-col="3" data-row="9" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-e">
+        <div id="b49" data-col="4" data-row="9" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-f">
+        <div id="b59" data-col="5" data-row="9" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-g">
+        <div id="b69" data-col="6" data-row="9" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-h">
+        <div id="b79" data-col="7" data-row="9" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-i">
+        <div id="b89" data-col="8" data-row="9" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-j">
+        <div id="b99" data-col="9" data-row="9" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-k">
+      </div>
+      <div class="ui-block-a">八
+      </div>
+      <div class="ui-block-b">
+        <div id="b18" data-col="1" data-row="8" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-c">
+        <div id="b28" data-col="2" data-row="8" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-d">
+        <div id="b38" data-col="3" data-row="8" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-e">
+        <div id="b48" data-col="4" data-row="8" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-f">
+        <div id="b58" data-col="5" data-row="8" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-g">
+        <div id="b68" data-col="6" data-row="8" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-h">
+        <div id="b78" data-col="7" data-row="8" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-i">
+        <div id="b88" data-col="8" data-row="8" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-j">
+        <div id="b98" data-col="9" data-row="8" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-k">
+      </div>
+      <div class="ui-block-a">七
+      </div>
+      <div class="ui-block-b">
+        <div id="b17" data-col="1" data-row="7" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-c">
+        <div id="b27" data-col="2" data-row="7" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-d">
+        <div id="b37" data-col="3" data-row="7" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-e">
+        <div id="b47" data-col="4" data-row="7" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-f">
+        <div id="b57" data-col="5" data-row="7" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-g">
+        <div id="b67" data-col="6" data-row="7" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-h">
+        <div id="b77" data-col="7" data-row="7" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-i">
+        <div id="b87" data-col="8" data-row="7" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-j">
+        <div id="b97" data-col="9" data-row="7" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-k">
+      </div>
+      <div class="ui-block-a">六
+      </div>
+      <div class="ui-block-b">
+        <div id="b16" data-col="1" data-row="6" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-c">
+        <div id="b26" data-col="2" data-row="6" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-d">
+        <div id="b36" data-col="3" data-row="6" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-e">
+        <div id="b46" data-col="4" data-row="6" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-f">
+        <div id="b56" data-col="5" data-row="6" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-g">
+        <div id="b66" data-col="6" data-row="6" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-h">
+        <div id="b76" data-col="7" data-row="6" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-i">
+        <div id="b86" data-col="8" data-row="6" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-j">
+        <div id="b96" data-col="9" data-row="6" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-k">
+      </div>
+      <div class="ui-block-a">五
+      </div>
+      <div class="ui-block-b">
+        <div id="b15" data-col="1" data-row="5" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-c">
+        <div id="b25" data-col="2" data-row="5" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-d">
+        <div id="b35" data-col="3" data-row="5" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-e">
+        <div id="b45" data-col="4" data-row="5" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-f">
+        <div id="b55" data-col="5" data-row="5" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-g">
+        <div id="b65" data-col="6" data-row="5" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-h">
+        <div id="b75" data-col="7" data-row="5" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-i">
+        <div id="b85" data-col="8" data-row="5" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-j">
+        <div id="b95" data-col="9" data-row="5" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-k">
+      </div>
+      <div class="ui-block-a">四
+      </div>
+      <div class="ui-block-b">
+        <div id="b14" data-col="1" data-row="4" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-c">
+        <div id="b24" data-col="2" data-row="4" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-d">
+        <div id="b34" data-col="3" data-row="4" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-e">
+        <div id="b44" data-col="4" data-row="4" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-f">
+        <div id="b54" data-col="5" data-row="4" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-g">
+        <div id="b64" data-col="6" data-row="4" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-h">
+        <div id="b74" data-col="7" data-row="4" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-i">
+        <div id="b84" data-col="8" data-row="4" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-j">
+        <div id="b94" data-col="9" data-row="4" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-k">
+      </div>
+      <div class="ui-block-a">三
+      </div>
+      <div class="ui-block-b">
+        <div id="b13" data-col="1" data-row="3" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-c">
+        <div id="b23" data-col="2" data-row="3" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-d">
+        <div id="b33" data-col="3" data-row="3" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-e">
+        <div id="b43" data-col="4" data-row="3" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-f">
+        <div id="b53" data-col="5" data-row="3" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-g">
+        <div id="b63" data-col="6" data-row="3" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-h">
+        <div id="b73" data-col="7" data-row="3" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-i">
+        <div id="b83" data-col="8" data-row="3" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-j">
+        <div id="b93" data-col="9" data-row="3" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-k">
+      </div>
+      <div class="ui-block-a">二
+      </div>
+      <div class="ui-block-b">
+        <div id="b12" data-col="1" data-row="2" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-c">
+        <div id="b22" data-col="2" data-row="2" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-d">
+        <div id="b32" data-col="3" data-row="2" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-e">
+        <div id="b42" data-col="4" data-row="2" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-f">
+        <div id="b52" data-col="5" data-row="2" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-g">
+        <div id="b62" data-col="6" data-row="2" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-h">
+        <div id="b72" data-col="7" data-row="2" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-i">
+        <div id="b82" data-col="8" data-row="2" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-j">
+        <div id="b92" data-col="9" data-row="2" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-k">
+      </div>
+      <div class="ui-block-a">一
+      </div>
+      <div class="ui-block-b">
+        <div id="b11" data-col="1" data-row="1" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-c">
+        <div id="b21" data-col="2" data-row="1" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-d">
+        <div id="b31" data-col="3" data-row="1" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-e">
+        <div id="b41" data-col="4" data-row="1" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-f">
+        <div id="b51" data-col="5" data-row="1" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-g">
+        <div id="b61" data-col="6" data-row="1" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-h">
+        <div id="b71" data-col="7" data-row="1" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-i">
+        <div id="b81" data-col="8" data-row="1" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-j">
+        <div id="b91" data-col="9" data-row="1" class="ui-bar-board"><img class="empty" src="./img/empty.svg" alt=""></div>
+      </div>
+      <div class="ui-block-k">
+      </div>
+      <div class="ui-block-a">
+      </div>
+      <div class="ui-block-b">1
+      </div>
+      <div class="ui-block-c">2
+      </div>
+      <div class="ui-block-d">3
+      </div>
+      <div class="ui-block-e">4
+      </div>
+      <div class="ui-block-f">5
+      </div>
+      <div class="ui-block-g">6
+      </div>
+      <div class="ui-block-h">7
+      </div>
+      <div class="ui-block-i">8
+      </div>
+      <div class="ui-block-j">9
+      </div>
+      <div class="ui-block-k">
+      </div>
+    </div>
+    <div class="ui-grid-solo-first">
+      <div class="ui-block-a">
+	    <div data-role="controlgroup" data-type="horizontal">
+          <div id="btnSecond" class="ui-btn ui-no-icon ui-alt-icon ui-mini ui-nodisc-icon ui-btn-icon-right ui-btn-inline"><b data-i18n="btn_second">先手</b></div>
+          <div id="sHi" class="ui-btn ui-icon-fhi ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
+          <div id="sKa" class="ui-btn ui-icon-fka ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
+          <div id="sKi" class="ui-btn ui-icon-fki ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
+          <div id="sGi" class="ui-btn ui-icon-fgi ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
+          <div id="sKe" class="ui-btn ui-icon-fke ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
+          <div id="sKy" class="ui-btn ui-icon-fky ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
+          <div id="sFu" class="ui-btn ui-icon-ffu ui-mini ui-nodisc-icon ui-btn-icon-left ui-btn-inline">0</div>
+        </div>
+      </div>
+    </div>
+    <div class="ui-grid-solo">
+      <div id="naviA" style="display: none;">
+        <div style="text-align: center;" class="ui-grid-c">
+          <div class="ui-block-a">
+            <span id="naviStart" class="ui-btn-navi ui-mini ui-nodisc-icon ui-corner-all">&lt;&lt;</span>
+          </div>
+          <div class="ui-block-b">
+            <span id="naviPrev" class="ui-btn-navi ui-mini ui-nodisc-icon ui-corner-all">&lt;</span>
+          </div>
+          <div class="ui-block-c">
+            <span id="naviFollow" class="ui-btn-navi ui-mini ui-nodisc-icon ui-corner-all">&gt;</span>
+          </div>
+          <div class="ui-block-d">
+            <span id="naviEnd" class="ui-btn-navi ui-mini ui-nodisc-icon ui-corner-all">&gt;&gt;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui-grid-solo">
+      <div class="ui-grid-a-button">
+        <p>
+          <span class="message" id="spanStatus"></span>
+        </p>
+        <div class="ui-block-a">
+          <form>
+            <input id="btnStart" name="btn_start" type="button" value="新規対局" />
+          </form>
+        </div>
+        <div class="ui-block-b">
+          <form>
+            <input id="btnStop" name="btn_stop" type="button" value="中断" />
+          </form>
+        </div>
+      </div>
+    </div>
+    </div> <!-- block d -->
+    </div> <!-- grid c -->
+  </div>
+  <!-- <- reveese ==================================== -->  
   <div data-role="footer" data-id="common-footer" class="footer-copyright">
     <a href="http://happyclam.github.io">&copy;2018 happyclam.github.io</a>
   </div>
@@ -620,15 +846,6 @@
     <div role="main" class="ui-content">
       <a id="btnNari" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back" data-transition="flow" data-nari="1" data-i18n="dlg_promote_yes">成る</a>
       <a id="btnNarazu" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back" data-transition="flow" data-nari="0" data-i18n="dlg_promote_no">成らない</a>
-    </div>
-  </div>
-  <div data-role="popup" id="popupInterrupt" data-overlay-theme="a" data-theme="a" data-dismissible="false" style="max-width:400px;">
-    <div data-role="header" data-theme="a">
-      <h1 data-i18n="dlg_interrupt">中断しますか？</h1>
-    </div>
-    <div role="main" class="ui-content">
-      <a id="btnInterrupt" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-transition="flow" data-i18n="dlg_interrupt_yes">中断</a>
-      <a id="btnReturn" href="#" class="ui-btn ui-corner-all ui-shadow ui-btn-inline ui-btn-a" data-rel="back" data-transition="flow" data-i18n="dlg_interrupt_no">戻る</a>
     </div>
   </div>
   <div data-role="popup" id="popupCheckLeft" data-overlay-theme="a" data-theme="a" data-dismissible="false" style="max-width:400px;">
