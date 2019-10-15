@@ -218,6 +218,22 @@ img {
     /* outline:none; */
 }
 
+.firstR {
+    clip-path: polygon(50% 0, 95% 25%, 100% 100%, 0 100%, 5% 25%);
+    background: #F9BA39;
+    transform: scale(-1, -1);    
+    /* border:none; */
+    /* outline:none; */
+}
+
+.secondR {
+    clip-path: polygon(95% 75%, 50% 100%, 5% 75%, 0 0, 100% 0);
+    background: #F9BA39;
+    transform: scale(-1, -1);    
+    /* border:none; */
+    /* outline:none; */
+}
+
 .message {
     color:#ff0000;
 }
