@@ -1,5 +1,4 @@
-* linguist-vendored
-docs/*.js linguist-vendored=false
-docs/*.html linguist-vendored=false
-docs/img/*.* linguist-vendored=false
-docs/css/mine.css linguist-vendored=false
+search/docs/shogi99.js linguist-generated=true
+search/docs/index.html linguist-generated=true
+search/docs/img/* linguist-generated=true
+search/docs/css/mine.css linguist-generated=true
