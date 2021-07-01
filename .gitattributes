@@ -1,4 +1,5 @@
 * linguist-vendored
 docs/*.js linguist-vendored=false
 docs/*.html linguist-vendored=false
-
+docs/img/*.* linguist-vendored=false
+docs/css/mine.css linguist-vendored=false
